@@ -1,0 +1,656 @@
+{
+  "/Users/hhnho/workspace/ai-service/ai-as-a-service/chapter2-3/resources": {
+    "versionSfCore": null,
+    "versionFramework": "4.4.19",
+    "isWithinCompose": false,
+    "isCompose": false,
+    "composeOrgName": null,
+    "composeResolverProviders": {
+      "env": {
+        "instance": {
+          "credentials": "<REDACTED>",
+          "serviceConfigFile": {
+            "service": "resources",
+            "frameworkVersion": ">=4.0.0",
+            "custom": {
+              "bucket": "hhcrawlerbucket",
+              "crawlerqueue": "Chap2CrawlerQueue",
+              "analysisqueue": "Chap2AnalysisQueue",
+              "region": "ap-northeast-2",
+              "accountid": "311141557640"
+            },
+            "provider": {
+              "name": "aws",
+              "runtime": "nodejs14.x",
+              "stage": "dev",
+              "region": "ap-northeast-2",
+              "versionFunctions": true,
+              "compiledCloudFormationTemplate": {
+                "AWSTemplateFormatVersion": "2010-09-09",
+                "Description": "The AWS CloudFormation template for this Serverless application",
+                "Resources": {
+                  "WebAppS3Bucket": {
+                    "Type": "AWS::S3::Bucket",
+                    "Properties": {
+                      "BucketName": "hhcrawlerbucket",
+                      "PublicAccessBlockConfiguration": {
+                        "BlockPublicAcls": false,
+                        "IgnorePublicAcls": false,
+                        "BlockPublicPolicy": false,
+                        "RestrictPublicBuckets": false
+                      },
+                      "WebsiteConfiguration": {
+                        "IndexDocument": "index.html",
+                        "ErrorDocument": "index.html"
+                      }
+                    }
+                  },
+                  "WebAppS3BucketPolicy": {
+                    "Type": "AWS::S3::BucketPolicy",
+                    "Properties": {
+                      "Bucket": {
+                        "Ref": "WebAppS3Bucket"
+                      },
+                      "PolicyDocument": {
+                        "Statement": [
+                          {
+                            "Sid": "PublicReadGetObject",
+                            "Effect": "Allow",
+                            "Principal": "*",
+                            "Action": [
+                              "s3:GetObject"
+                            ],
+                            "Resource": "arn:aws:s3:::hhcrawlerbucket/*"
+                          }
+                        ]
+                      }
+                    }
+                  },
+                  "Chap2CrawlerQueue": {
+                    "Type": "AWS::SQS::Queue",
+                    "Properties": {
+                      "QueueName": "Chap2CrawlerQueue"
+                    }
+                  },
+                  "Chap2AnalysisQueue": {
+                    "Type": "AWS::SQS::Queue",
+                    "Properties": {
+                      "QueueName": "Chap2AnalysisQueue"
+                    }
+                  }
+                },
+                "Outputs": {
+                  "ServerlessDeploymentBucketName": {
+                    "Value": "serverless-framework-deployments-ap-northeast-2-21f132c7-a2b2",
+                    "Export": {
+                      "Name": "sls-resources-dev-ServerlessDeploymentBucketName"
+                    }
+                  }
+                }
+              }
+            },
+            "resources": {
+              "Resources": {
+                "WebAppS3Bucket": {
+                  "Type": "AWS::S3::Bucket",
+                  "Properties": {
+                    "BucketName": "hhcrawlerbucket",
+                    "PublicAccessBlockConfiguration": {
+                      "BlockPublicAcls": false,
+                      "IgnorePublicAcls": false,
+                      "BlockPublicPolicy": false,
+                      "RestrictPublicBuckets": false
+                    },
+                    "WebsiteConfiguration": {
+                      "IndexDocument": "index.html",
+                      "ErrorDocument": "index.html"
+                    }
+                  }
+                },
+                "WebAppS3BucketPolicy": {
+                  "Type": "AWS::S3::BucketPolicy",
+                  "Properties": {
+                    "Bucket": {
+                      "Ref": "WebAppS3Bucket"
+                    },
+                    "PolicyDocument": {
+                      "Statement": [
+                        {
+                          "Sid": "PublicReadGetObject",
+                          "Effect": "Allow",
+                          "Principal": "*",
+                          "Action": [
+                            "s3:GetObject"
+                          ],
+                          "Resource": "arn:aws:s3:::hhcrawlerbucket/*"
+                        }
+                      ]
+                    }
+                  }
+                },
+                "Chap2CrawlerQueue": {
+                  "Type": "AWS::SQS::Queue",
+                  "Properties": {
+                    "QueueName": "Chap2CrawlerQueue"
+                  }
+                },
+                "Chap2AnalysisQueue": {
+                  "Type": "AWS::SQS::Queue",
+                  "Properties": {
+                    "QueueName": "Chap2AnalysisQueue"
+                  }
+                }
+              },
+              "Outputs": {}
+            }
+          },
+          "configFileDirPath": "/Users/hhnho/workspace/ai-service/ai-as-a-service/chapter2-3/resources",
+          "config": {
+            "type": "env"
+          },
+          "options": {},
+          "stage": "dev",
+          "logger": {
+            "namespace": "s:core:resolver:env",
+            "prefix": null,
+            "prefixColor": null
+          },
+          "_credentialsPromise": "<REDACTED>"
+        },
+        "resolvers": {}
+      },
+      "default-aws-credential-resolver": "<REDACTED>",
+      "self": {
+        "instance": {
+          "credentials": "<REDACTED>",
+          "serviceConfigFile": {
+            "service": "resources",
+            "frameworkVersion": ">=4.0.0",
+            "custom": {
+              "bucket": "hhcrawlerbucket",
+              "crawlerqueue": "Chap2CrawlerQueue",
+              "analysisqueue": "Chap2AnalysisQueue",
+              "region": "ap-northeast-2",
+              "accountid": "311141557640"
+            },
+            "provider": {
+              "name": "aws",
+              "runtime": "nodejs14.x",
+              "stage": "dev",
+              "region": "ap-northeast-2",
+              "versionFunctions": true,
+              "compiledCloudFormationTemplate": {
+                "AWSTemplateFormatVersion": "2010-09-09",
+                "Description": "The AWS CloudFormation template for this Serverless application",
+                "Resources": {
+                  "WebAppS3Bucket": {
+                    "Type": "AWS::S3::Bucket",
+                    "Properties": {
+                      "BucketName": "hhcrawlerbucket",
+                      "PublicAccessBlockConfiguration": {
+                        "BlockPublicAcls": false,
+                        "IgnorePublicAcls": false,
+                        "BlockPublicPolicy": false,
+                        "RestrictPublicBuckets": false
+                      },
+                      "WebsiteConfiguration": {
+                        "IndexDocument": "index.html",
+                        "ErrorDocument": "index.html"
+                      }
+                    }
+                  },
+                  "WebAppS3BucketPolicy": {
+                    "Type": "AWS::S3::BucketPolicy",
+                    "Properties": {
+                      "Bucket": {
+                        "Ref": "WebAppS3Bucket"
+                      },
+                      "PolicyDocument": {
+                        "Statement": [
+                          {
+                            "Sid": "PublicReadGetObject",
+                            "Effect": "Allow",
+                            "Principal": "*",
+                            "Action": [
+                              "s3:GetObject"
+                            ],
+                            "Resource": "arn:aws:s3:::hhcrawlerbucket/*"
+                          }
+                        ]
+                      }
+                    }
+                  },
+                  "Chap2CrawlerQueue": {
+                    "Type": "AWS::SQS::Queue",
+                    "Properties": {
+                      "QueueName": "Chap2CrawlerQueue"
+                    }
+                  },
+                  "Chap2AnalysisQueue": {
+                    "Type": "AWS::SQS::Queue",
+                    "Properties": {
+                      "QueueName": "Chap2AnalysisQueue"
+                    }
+                  }
+                },
+                "Outputs": {
+                  "ServerlessDeploymentBucketName": {
+                    "Value": "serverless-framework-deployments-ap-northeast-2-21f132c7-a2b2",
+                    "Export": {
+                      "Name": "sls-resources-dev-ServerlessDeploymentBucketName"
+                    }
+                  }
+                }
+              }
+            },
+            "resources": {
+              "Resources": {
+                "WebAppS3Bucket": {
+                  "Type": "AWS::S3::Bucket",
+                  "Properties": {
+                    "BucketName": "hhcrawlerbucket",
+                    "PublicAccessBlockConfiguration": {
+                      "BlockPublicAcls": false,
+                      "IgnorePublicAcls": false,
+                      "BlockPublicPolicy": false,
+                      "RestrictPublicBuckets": false
+                    },
+                    "WebsiteConfiguration": {
+                      "IndexDocument": "index.html",
+                      "ErrorDocument": "index.html"
+                    }
+                  }
+                },
+                "WebAppS3BucketPolicy": {
+                  "Type": "AWS::S3::BucketPolicy",
+                  "Properties": {
+                    "Bucket": {
+                      "Ref": "WebAppS3Bucket"
+                    },
+                    "PolicyDocument": {
+                      "Statement": [
+                        {
+                          "Sid": "PublicReadGetObject",
+                          "Effect": "Allow",
+                          "Principal": "*",
+                          "Action": [
+                            "s3:GetObject"
+                          ],
+                          "Resource": "arn:aws:s3:::hhcrawlerbucket/*"
+                        }
+                      ]
+                    }
+                  }
+                },
+                "Chap2CrawlerQueue": {
+                  "Type": "AWS::SQS::Queue",
+                  "Properties": {
+                    "QueueName": "Chap2CrawlerQueue"
+                  }
+                },
+                "Chap2AnalysisQueue": {
+                  "Type": "AWS::SQS::Queue",
+                  "Properties": {
+                    "QueueName": "Chap2AnalysisQueue"
+                  }
+                }
+              },
+              "Outputs": {}
+            }
+          },
+          "configFileDirPath": "/Users/hhnho/workspace/ai-service/ai-as-a-service/chapter2-3/resources",
+          "config": {
+            "type": "self"
+          },
+          "options": {},
+          "stage": "dev",
+          "dashboard": null,
+          "logger": {
+            "namespace": "s:core:resolver:self",
+            "prefix": null,
+            "prefixColor": null
+          },
+          "_credentialsPromise": "<REDACTED>"
+        },
+        "resolvers": {}
+      },
+      "sls": {
+        "instance": {
+          "credentials": "<REDACTED>",
+          "serviceConfigFile": {
+            "service": "resources",
+            "frameworkVersion": ">=4.0.0",
+            "custom": {
+              "bucket": "hhcrawlerbucket",
+              "crawlerqueue": "Chap2CrawlerQueue",
+              "analysisqueue": "Chap2AnalysisQueue",
+              "region": "ap-northeast-2",
+              "accountid": "311141557640"
+            },
+            "provider": {
+              "name": "aws",
+              "runtime": "nodejs14.x",
+              "stage": "dev",
+              "region": "ap-northeast-2",
+              "versionFunctions": true,
+              "compiledCloudFormationTemplate": {
+                "AWSTemplateFormatVersion": "2010-09-09",
+                "Description": "The AWS CloudFormation template for this Serverless application",
+                "Resources": {
+                  "WebAppS3Bucket": {
+                    "Type": "AWS::S3::Bucket",
+                    "Properties": {
+                      "BucketName": "hhcrawlerbucket",
+                      "PublicAccessBlockConfiguration": {
+                        "BlockPublicAcls": false,
+                        "IgnorePublicAcls": false,
+                        "BlockPublicPolicy": false,
+                        "RestrictPublicBuckets": false
+                      },
+                      "WebsiteConfiguration": {
+                        "IndexDocument": "index.html",
+                        "ErrorDocument": "index.html"
+                      }
+                    }
+                  },
+                  "WebAppS3BucketPolicy": {
+                    "Type": "AWS::S3::BucketPolicy",
+                    "Properties": {
+                      "Bucket": {
+                        "Ref": "WebAppS3Bucket"
+                      },
+                      "PolicyDocument": {
+                        "Statement": [
+                          {
+                            "Sid": "PublicReadGetObject",
+                            "Effect": "Allow",
+                            "Principal": "*",
+                            "Action": [
+                              "s3:GetObject"
+                            ],
+                            "Resource": "arn:aws:s3:::hhcrawlerbucket/*"
+                          }
+                        ]
+                      }
+                    }
+                  },
+                  "Chap2CrawlerQueue": {
+                    "Type": "AWS::SQS::Queue",
+                    "Properties": {
+                      "QueueName": "Chap2CrawlerQueue"
+                    }
+                  },
+                  "Chap2AnalysisQueue": {
+                    "Type": "AWS::SQS::Queue",
+                    "Properties": {
+                      "QueueName": "Chap2AnalysisQueue"
+                    }
+                  }
+                },
+                "Outputs": {
+                  "ServerlessDeploymentBucketName": {
+                    "Value": "serverless-framework-deployments-ap-northeast-2-21f132c7-a2b2",
+                    "Export": {
+                      "Name": "sls-resources-dev-ServerlessDeploymentBucketName"
+                    }
+                  }
+                }
+              }
+            },
+            "resources": {
+              "Resources": {
+                "WebAppS3Bucket": {
+                  "Type": "AWS::S3::Bucket",
+                  "Properties": {
+                    "BucketName": "hhcrawlerbucket",
+                    "PublicAccessBlockConfiguration": {
+                      "BlockPublicAcls": false,
+                      "IgnorePublicAcls": false,
+                      "BlockPublicPolicy": false,
+                      "RestrictPublicBuckets": false
+                    },
+                    "WebsiteConfiguration": {
+                      "IndexDocument": "index.html",
+                      "ErrorDocument": "index.html"
+                    }
+                  }
+                },
+                "WebAppS3BucketPolicy": {
+                  "Type": "AWS::S3::BucketPolicy",
+                  "Properties": {
+                    "Bucket": {
+                      "Ref": "WebAppS3Bucket"
+                    },
+                    "PolicyDocument": {
+                      "Statement": [
+                        {
+                          "Sid": "PublicReadGetObject",
+                          "Effect": "Allow",
+                          "Principal": "*",
+                          "Action": [
+                            "s3:GetObject"
+                          ],
+                          "Resource": "arn:aws:s3:::hhcrawlerbucket/*"
+                        }
+                      ]
+                    }
+                  }
+                },
+                "Chap2CrawlerQueue": {
+                  "Type": "AWS::SQS::Queue",
+                  "Properties": {
+                    "QueueName": "Chap2CrawlerQueue"
+                  }
+                },
+                "Chap2AnalysisQueue": {
+                  "Type": "AWS::SQS::Queue",
+                  "Properties": {
+                    "QueueName": "Chap2AnalysisQueue"
+                  }
+                }
+              },
+              "Outputs": {}
+            }
+          },
+          "configFileDirPath": "/Users/hhnho/workspace/ai-service/ai-as-a-service/chapter2-3/resources",
+          "config": {
+            "type": "sls"
+          },
+          "options": {},
+          "stage": "dev",
+          "dashboard": null,
+          "logger": {
+            "namespace": "s:core:resolver:sls",
+            "prefix": null,
+            "prefixColor": null
+          },
+          "_credentialsPromise": "<REDACTED>"
+        },
+        "resolvers": {}
+      }
+    },
+    "composeServiceName": null,
+    "servicePath": "/Users/hhnho/workspace/ai-service/ai-as-a-service/chapter2-3/resources",
+    "serviceConfigFileName": "serverless.yml",
+    "service": {
+      "service": "resources",
+      "frameworkVersion": ">=4.0.0",
+      "custom": {
+        "bucket": "hhcrawlerbucket",
+        "crawlerqueue": "Chap2CrawlerQueue",
+        "analysisqueue": "Chap2AnalysisQueue",
+        "region": "ap-northeast-2",
+        "accountid": "311141557640"
+      },
+      "provider": {
+        "name": "aws",
+        "runtime": "nodejs14.x",
+        "stage": "dev",
+        "region": "ap-northeast-2",
+        "versionFunctions": true,
+        "compiledCloudFormationTemplate": {
+          "AWSTemplateFormatVersion": "2010-09-09",
+          "Description": "The AWS CloudFormation template for this Serverless application",
+          "Resources": {
+            "WebAppS3Bucket": {
+              "Type": "AWS::S3::Bucket",
+              "Properties": {
+                "BucketName": "hhcrawlerbucket",
+                "PublicAccessBlockConfiguration": {
+                  "BlockPublicAcls": false,
+                  "IgnorePublicAcls": false,
+                  "BlockPublicPolicy": false,
+                  "RestrictPublicBuckets": false
+                },
+                "WebsiteConfiguration": {
+                  "IndexDocument": "index.html",
+                  "ErrorDocument": "index.html"
+                }
+              }
+            },
+            "WebAppS3BucketPolicy": {
+              "Type": "AWS::S3::BucketPolicy",
+              "Properties": {
+                "Bucket": {
+                  "Ref": "WebAppS3Bucket"
+                },
+                "PolicyDocument": {
+                  "Statement": [
+                    {
+                      "Sid": "PublicReadGetObject",
+                      "Effect": "Allow",
+                      "Principal": "*",
+                      "Action": [
+                        "s3:GetObject"
+                      ],
+                      "Resource": "arn:aws:s3:::hhcrawlerbucket/*"
+                    }
+                  ]
+                }
+              }
+            },
+            "Chap2CrawlerQueue": {
+              "Type": "AWS::SQS::Queue",
+              "Properties": {
+                "QueueName": "Chap2CrawlerQueue"
+              }
+            },
+            "Chap2AnalysisQueue": {
+              "Type": "AWS::SQS::Queue",
+              "Properties": {
+                "QueueName": "Chap2AnalysisQueue"
+              }
+            }
+          },
+          "Outputs": {
+            "ServerlessDeploymentBucketName": {
+              "Value": "serverless-framework-deployments-ap-northeast-2-21f132c7-a2b2",
+              "Export": {
+                "Name": "sls-resources-dev-ServerlessDeploymentBucketName"
+              }
+            }
+          }
+        }
+      },
+      "resources": {
+        "Resources": {
+          "WebAppS3Bucket": {
+            "Type": "AWS::S3::Bucket",
+            "Properties": {
+              "BucketName": "hhcrawlerbucket",
+              "PublicAccessBlockConfiguration": {
+                "BlockPublicAcls": false,
+                "IgnorePublicAcls": false,
+                "BlockPublicPolicy": false,
+                "RestrictPublicBuckets": false
+              },
+              "WebsiteConfiguration": {
+                "IndexDocument": "index.html",
+                "ErrorDocument": "index.html"
+              }
+            }
+          },
+          "WebAppS3BucketPolicy": {
+            "Type": "AWS::S3::BucketPolicy",
+            "Properties": {
+              "Bucket": {
+                "Ref": "WebAppS3Bucket"
+              },
+              "PolicyDocument": {
+                "Statement": [
+                  {
+                    "Sid": "PublicReadGetObject",
+                    "Effect": "Allow",
+                    "Principal": "*",
+                    "Action": [
+                      "s3:GetObject"
+                    ],
+                    "Resource": "arn:aws:s3:::hhcrawlerbucket/*"
+                  }
+                ]
+              }
+            }
+          },
+          "Chap2CrawlerQueue": {
+            "Type": "AWS::SQS::Queue",
+            "Properties": {
+              "QueueName": "Chap2CrawlerQueue"
+            }
+          },
+          "Chap2AnalysisQueue": {
+            "Type": "AWS::SQS::Queue",
+            "Properties": {
+              "QueueName": "Chap2AnalysisQueue"
+            }
+          }
+        },
+        "Outputs": {}
+      }
+    },
+    "serviceRawFile": "service: resources\nframeworkVersion: \">=4.0.0\"\ncustom:\n  bucket: ${env:CHAPTER2_BUCKET}\n  crawlerqueue: Chap2CrawlerQueue\n  analysisqueue: Chap2AnalysisQueue\n  region: ${env:AWS_DEFAULT_REGION, 'ap-northeast-2'}\n  accountid: ${env:AWS_ACCOUNT_ID}\n\nprovider:\n  name: aws\n  runtime: nodejs14.x\n  stage: dev\n  region: ${env:AWS_DEFAULT_REGION, 'ap-northeast-2'}\n\nresources:\n  Resources:\n    WebAppS3Bucket:\n      Type: AWS::S3::Bucket\n      Properties:\n        BucketName: ${self:custom.bucket}\n        PublicAccessBlockConfiguration:\n          BlockPublicAcls: false\n          IgnorePublicAcls: false\n          BlockPublicPolicy: false\n          RestrictPublicBuckets: false\n        WebsiteConfiguration:\n          IndexDocument: index.html\n          ErrorDocument: index.html\n    WebAppS3BucketPolicy:\n      Type: AWS::S3::BucketPolicy\n      Properties:\n        Bucket:\n          Ref: WebAppS3Bucket\n        PolicyDocument:\n          Statement:\n            - Sid: PublicReadGetObject\n              Effect: Allow\n              Principal: \"*\"\n              Action:\n                - s3:GetObject\n              Resource: arn:aws:s3:::${self:custom.bucket}/*\n    Chap2CrawlerQueue:\n      Type: \"AWS::SQS::Queue\"\n      Properties:\n        QueueName: \"${self:custom.crawlerqueue}\"\n    Chap2AnalysisQueue:\n      Type: \"AWS::SQS::Queue\"\n      Properties:\n        QueueName: \"${self:custom.analysisqueue}\"\n\n",
+    "command": [
+      "deploy"
+    ],
+    "options": {},
+    "error": null,
+    "params": {},
+    "machineId": "43827bc6c1372524eb938ec8dca1dc6e",
+    "stage": "dev",
+    "accessKeyV2": "<REDACTED>",
+    "accessKeyV1": "<REDACTED>",
+    "orgId": "e96515c3-4983-43a3-9b01-d17f2a06b0a6",
+    "orgName": "hhnho",
+    "userId": "HC3vSWQknxflnHjkCs",
+    "dashboard": {
+      "isEnabledForService": false,
+      "requiredAuthentication": false,
+      "orgFeaturesInUse": null,
+      "orgObservabilityIntegrations": null,
+      "serviceAppId": null,
+      "serviceProvider": null,
+      "instanceParameters": null
+    },
+    "userName": "hhnho",
+    "subscription": null,
+    "userEmail": "hyunho028@gmail.com",
+    "serviceProviderAwsRegion": "ap-northeast-2",
+    "serviceProviderAwsCredentials": "<REDACTED>",
+    "serviceProviderAwsAccountId": "311141557640",
+    "projectType": "traditional",
+    "versionSf": "4.4.19",
+    "serviceProviderAwsCfStackName": "resources-dev",
+    "integrations": {},
+    "serviceUniqueId": "arn:aws:cloudformation:ap-northeast-2:311141557640:stack/resources-dev/b7b185b0-d67f-11ef-98ad-06da153f71fd",
+    "serviceProviderAwsCfStackId": "arn:aws:cloudformation:ap-northeast-2:311141557640:stack/resources-dev/b7b185b0-d67f-11ef-98ad-06da153f71fd",
+    "serviceProviderAwsCfStackCreated": "2025-01-19T16:09:10.912Z",
+    "serviceProviderAwsCfStackUpdated": null,
+    "serviceProviderAwsCfStackStatus": "CREATE_COMPLETE",
+    "serviceProviderAwsCfStackOutputs": [
+      {
+        "OutputKey": "ServerlessDeploymentBucketName",
+        "OutputValue": "serverless-framework-deployments-ap-northeast-2-21f132c7-a2b2",
+        "ExportName": "sls-resources-dev-ServerlessDeploymentBucketName"
+      }
+    ]
+  }
+}

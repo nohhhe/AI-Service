@@ -1,0 +1,176 @@
+{
+  "/Users/hhnho/workspace/ai-service/ai-as-a-service/chapter2-3/ui-service/serverless.yml": {
+    "versionFramework": "4.6.2",
+    "servicePath": "/Users/hhnho/workspace/ai-service/ai-as-a-service/chapter2-3/ui-service/serverless.yml",
+    "serviceConfigFileName": "serverless.yml",
+    "service": {
+      "service": "ui-service",
+      "frameworkVersion": ">=>=4.0.0",
+      "plugins": [
+        "serverless-domain-manager"
+      ],
+      "custom": {
+        "bucket": "hhcrawlerbucket",
+        "crawlerqueue": "Chap2CrawlerQueue",
+        "region": "ap-northeast-2",
+        "domain": "hhnai.com",
+        "accountid": "311141557640",
+        "customDomain": {
+          "domainName": "chapter2api.hhnai.com",
+          "stage": "dev",
+          "basePath": "api",
+          "certificateName": "*.hhnai.com",
+          "createRoute53Record": true,
+          "endpointType": "regional"
+        }
+      },
+      "provider": {
+        "name": "aws",
+        "runtime": "nodejs20.x",
+        "region": "ap-northeast-2",
+        "iamRoleStatements": [
+          {
+            "Effect": "Allow",
+            "Action": [
+              "s3:PutObject",
+              "s3:GetObject"
+            ],
+            "Resource": "arn:aws:s3:::hhcrawlerbucket/*"
+          },
+          {
+            "Effect": "Allow",
+            "Action": [
+              "sqs:SendMessage",
+              "sqs:DeleteMessage",
+              "sqs:GetQueueUrl"
+            ],
+            "Resource": "arn:aws:sqs:*:*:Chap2CrawlerQueue"
+          },
+          {
+            "Effect": "Allow",
+            "Action": [
+              "sqs:ListQueues"
+            ],
+            "Resource": "arn:aws:sqs:::*"
+          }
+        ],
+        "stage": "dev",
+        "versionFunctions": true
+      },
+      "functions": {
+        "analyzeUrl": {
+          "handler": "handler.analyzeUrl",
+          "environment": {
+            "BUCKET": "hhcrawlerbucket",
+            "QUEUE": "Chap2CrawlerQueue",
+            "REGION": "ap-northeast-2",
+            "ACCOUNTID": "311141557640"
+          },
+          "events": [
+            {
+              "http": {
+                "path": "url/analyze",
+                "method": "post",
+                "cors": true
+              }
+            }
+          ],
+          "name": "ui-service-dev-analyzeUrl"
+        },
+        "listUrls": {
+          "handler": "handler.listUrls",
+          "environment": {
+            "BUCKET": "hhcrawlerbucket"
+          },
+          "events": [
+            {
+              "http": {
+                "path": "url/list",
+                "method": "get",
+                "cors": true
+              }
+            }
+          ],
+          "name": "ui-service-dev-listUrls"
+        },
+        "listImages": {
+          "handler": "handler.listImages",
+          "environment": {
+            "BUCKET": "hhcrawlerbucket"
+          },
+          "events": [
+            {
+              "http": {
+                "path": "image/list",
+                "method": "get",
+                "cors": true
+              }
+            }
+          ],
+          "name": "ui-service-dev-listImages"
+        }
+      }
+    },
+    "provider": {
+      "name": "aws",
+      "runtime": "nodejs20.x",
+      "region": "ap-northeast-2",
+      "iamRoleStatements": [
+        {
+          "Effect": "Allow",
+          "Action": [
+            "s3:PutObject",
+            "s3:GetObject"
+          ],
+          "Resource": "arn:aws:s3:::hhcrawlerbucket/*"
+        },
+        {
+          "Effect": "Allow",
+          "Action": [
+            "sqs:SendMessage",
+            "sqs:DeleteMessage",
+            "sqs:GetQueueUrl"
+          ],
+          "Resource": "arn:aws:sqs:*:*:Chap2CrawlerQueue"
+        },
+        {
+          "Effect": "Allow",
+          "Action": [
+            "sqs:ListQueues"
+          ],
+          "Resource": "arn:aws:sqs:::*"
+        }
+      ],
+      "stage": "dev",
+      "versionFunctions": true
+    },
+    "dashboard": {
+      "isEnabledForService": false,
+      "requiredAuthentication": false,
+      "orgFeaturesInUse": null,
+      "orgObservabilityIntegrations": null,
+      "serviceAppId": null,
+      "serviceProvider": null,
+      "instanceParameters": null
+    },
+    "error": {
+      "message": "Error: 'chapter2api.hhnai.com' was not created in API Gateway.\nError: Error: Could not find the certificate *.hhnai.com.",
+      "stack": "Error: Error: 'chapter2api.hhnai.com' was not created in API Gateway.\nError: Error: Could not find the certificate *.hhnai.com.\n    at /Users/hhnho/workspace/ai-service/ai-as-a-service/chapter2-3/ui-service/node_modules/serverless-domain-manager/index.js:108:15\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async PluginManager.runHooks (file:///Users/hhnho/.serverless/releases/4.6.2/package/dist/sf-core.js:1190:9557)\n    at async PluginManager.invoke (file:///Users/hhnho/.serverless/releases/4.6.2/package/dist/sf-core.js:1190:10328)\n    at async PluginManager.run (file:///Users/hhnho/.serverless/releases/4.6.2/package/dist/sf-core.js:1190:11059)\n    at async Serverless.run (file:///Users/hhnho/.serverless/releases/4.6.2/package/dist/sf-core.js:1197:10661)\n    at async runFramework (file:///Users/hhnho/.serverless/releases/4.6.2/package/dist/sf-core.js:1224:1775)\n    at async TraditionalRunner.run (file:///Users/hhnho/.serverless/releases/4.6.2/package/dist/sf-core.js:1220:28320)\n    at async route (file:///Users/hhnho/.serverless/releases/4.6.2/package/dist/sf-core.js:1262:2601)\n    at async Object.run (file:///Users/hhnho/.serverless/releases/4.6.2/package/dist/sf-core.js:1263:3486)"
+    },
+    "serviceRawFile": "service: ui-service\nframeworkVersion: \">=>=4.0.0\"\nplugins:\n  - serverless-domain-manager\ncustom:\n  bucket: ${env:CHAPTER2_BUCKET}\n  crawlerqueue: Chap2CrawlerQueue\n  region: ${env:AWS_DEFAULT_REGION, 'ap-northeast-2'}\n  domain: ${env:CHAPTER2_DOMAIN}\n  accountid: ${env:AWS_ACCOUNT_ID}\n  customDomain:\n    domainName: 'chapter2api.${self:custom.domain}'\n    stage: dev\n    basePath: api\n    certificateName: '*.${self:custom.domain}'\n    createRoute53Record: true\n    endpointType: regional\n\nprovider:\n  name: aws\n  runtime: nodejs20.x\n  region: ${env:AWS_DEFAULT_REGION, 'ap-northeast-2'}\n  iamRoleStatements:\n    - Effect: Allow\n      Action:\n        - s3:PutObject\n        - s3:GetObject\n      Resource: \"arn:aws:s3:::${self:custom.bucket}/*\"\n    - Effect: Allow\n      Action:\n        - sqs:SendMessage\n        - sqs:DeleteMessage\n        - sqs:GetQueueUrl\n      Resource: \"arn:aws:sqs:*:*:${self:custom.crawlerqueue}\"\n    - Effect: Allow\n      Action:\n        - sqs:ListQueues\n      Resource: \"arn:aws:sqs:::*\"\n\nfunctions:\n  analyzeUrl:\n    handler: handler.analyzeUrl\n    environment:\n      BUCKET: ${self:custom.bucket}\n      QUEUE: ${self:custom.crawlerqueue}\n      REGION: ${self:custom.region}\n      ACCOUNTID: ${self:custom.accountid}\n    events:\n      - http:\n          path: url/analyze\n          method: post\n          cors: true\n  listUrls:\n    handler: handler.listUrls\n    environment:\n      BUCKET: ${self:custom.bucket}\n    events:\n      - http:\n          path: url/list\n          method: get\n          cors: true\n  listImages:\n    handler: handler.listImages\n    environment:\n      BUCKET: ${self:custom.bucket}\n    events:\n      - http:\n          path: image/list\n          method: get\n          cors: true\n\n",
+    "command": [
+      "create_domain"
+    ],
+    "options": {},
+    "orgId": "e96515c3-4983-43a3-9b01-d17f2a06b0a6",
+    "orgName": "hhnho",
+    "userId": "HC3vSWQknxflnHjkCs",
+    "userName": "hhnho",
+    "serviceProviderAwsAccountId": "311141557640",
+    "serviceProviderAwsCfStackId": null,
+    "serviceProviderAwsCfStackCreated": null,
+    "serviceProviderAwsCfStackUpdated": null,
+    "serviceProviderAwsCfStackStatus": null,
+    "serviceProviderAwsCfStackOutputs": null
+  }
+}

@@ -1,0 +1,294 @@
+{
+  "service": {
+    "service": "crawler-service",
+    "serviceObject": {
+      "name": "crawler-service"
+    },
+    "provider": {
+      "name": "aws",
+      "runtime": "nodejs20.x",
+      "stage": "dev",
+      "region": "ap-northeast-2",
+      "iamRoleStatements": [
+        {
+          "Effect": "Allow",
+          "Action": [
+            "s3:PutObject"
+          ],
+          "Resource": "arn:aws:s3:::hhcrawlerbucket/*"
+        },
+        {
+          "Effect": "Allow",
+          "Action": [
+            "sqs:ListQueues"
+          ],
+          "Resource": "arn:aws:sqs:ap-northeast-2:*:*"
+        },
+        {
+          "Effect": "Allow",
+          "Action": [
+            "sqs:ReceiveMessage",
+            "sqs:DeleteMessage",
+            "sqs:GetQueueUrl"
+          ],
+          "Resource": "arn:aws:sqs:*:*:Chap2CrawlerQueue"
+        },
+        {
+          "Effect": "Allow",
+          "Action": [
+            "sqs:SendMessage",
+            "sqs:DeleteMessage",
+            "sqs:GetQueueUrl"
+          ],
+          "Resource": "arn:aws:sqs:*:*:Chap2AnalysisQueue"
+        }
+      ],
+      "versionFunctions": true,
+      "compiledCloudFormationTemplate": {
+        "AWSTemplateFormatVersion": "2010-09-09",
+        "Description": "The AWS CloudFormation template for this Serverless application",
+        "Resources": {
+          "CrawlImagesLogGroup": {
+            "Type": "AWS::Logs::LogGroup",
+            "Properties": {
+              "LogGroupName": "/aws/lambda/crawler-service-dev-crawlImages"
+            }
+          },
+          "IamRoleLambdaExecution": {
+            "Type": "AWS::IAM::Role",
+            "Properties": {
+              "AssumeRolePolicyDocument": {
+                "Version": "2012-10-17",
+                "Statement": [
+                  {
+                    "Effect": "Allow",
+                    "Principal": {
+                      "Service": [
+                        "lambda.amazonaws.com"
+                      ]
+                    },
+                    "Action": [
+                      "sts:AssumeRole"
+                    ]
+                  }
+                ]
+              },
+              "Policies": [
+                {
+                  "PolicyName": {
+                    "Fn::Join": [
+                      "-",
+                      [
+                        "crawler-service",
+                        "dev",
+                        "lambda"
+                      ]
+                    ]
+                  },
+                  "PolicyDocument": {
+                    "Version": "2012-10-17",
+                    "Statement": [
+                      {
+                        "Effect": "Allow",
+                        "Action": [
+                          "logs:CreateLogStream",
+                          "logs:CreateLogGroup",
+                          "logs:TagResource"
+                        ],
+                        "Resource": [
+                          {
+                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/crawler-service-dev*:*"
+                          }
+                        ]
+                      },
+                      {
+                        "Effect": "Allow",
+                        "Action": [
+                          "logs:PutLogEvents"
+                        ],
+                        "Resource": [
+                          {
+                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/crawler-service-dev*:*:*"
+                          }
+                        ]
+                      },
+                      {
+                        "$ref": "$[\"service\"][\"provider\"][\"iamRoleStatements\"][0]"
+                      },
+                      {
+                        "$ref": "$[\"service\"][\"provider\"][\"iamRoleStatements\"][1]"
+                      },
+                      {
+                        "$ref": "$[\"service\"][\"provider\"][\"iamRoleStatements\"][2]"
+                      },
+                      {
+                        "$ref": "$[\"service\"][\"provider\"][\"iamRoleStatements\"][3]"
+                      },
+                      {
+                        "Effect": "Allow",
+                        "Action": [
+                          "sqs:ReceiveMessage",
+                          "sqs:DeleteMessage",
+                          "sqs:GetQueueAttributes"
+                        ],
+                        "Resource": [
+                          "arn:aws:sqs:ap-northeast-2:311141557640:Chap2CrawlerQueue"
+                        ]
+                      }
+                    ]
+                  }
+                }
+              ],
+              "Path": "/",
+              "RoleName": {
+                "Fn::Join": [
+                  "-",
+                  [
+                    "crawler-service",
+                    "dev",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    "lambdaRole"
+                  ]
+                ]
+              }
+            }
+          },
+          "CrawlImagesLambdaFunction": {
+            "Type": "AWS::Lambda::Function",
+            "Properties": {
+              "Code": {
+                "S3Bucket": "serverless-framework-deployments-ap-northeast-2-21f132c7-a2b2",
+                "S3Key": "serverless/crawler-service/dev/1739093826653-2025-02-09T09:37:06.653Z/crawler-service.zip"
+              },
+              "Handler": "handler.crawlImages",
+              "Runtime": "nodejs20.x",
+              "FunctionName": "crawler-service-dev-crawlImages",
+              "MemorySize": 1024,
+              "Timeout": 6,
+              "Environment": {
+                "Variables": {
+                  "BUCKET": "hhcrawlerbucket",
+                  "ANALYSIS_QUEUE": "Chap2AnalysisQueue",
+                  "REGION": "ap-northeast-2",
+                  "ACCOUNTID": "311141557640"
+                }
+              },
+              "Role": {
+                "Fn::GetAtt": [
+                  "IamRoleLambdaExecution",
+                  "Arn"
+                ]
+              }
+            },
+            "DependsOn": [
+              "CrawlImagesLogGroup"
+            ]
+          },
+          "CrawlImagesLambdaVersionC7wC1U2hdSfC93RuletURxe9AL73omsDbCnXQymzyg": {
+            "Type": "AWS::Lambda::Version",
+            "DeletionPolicy": "Retain",
+            "Properties": {
+              "FunctionName": {
+                "Ref": "CrawlImagesLambdaFunction"
+              },
+              "CodeSha256": "TX5odHxrPzCp3VLMXUtniVAw4lrwXif+lshO5rXEKf8="
+            }
+          },
+          "CrawlImagesEventSourceMappingSQSChap2CrawlerQueue": {
+            "Type": "AWS::Lambda::EventSourceMapping",
+            "DependsOn": [
+              "IamRoleLambdaExecution"
+            ],
+            "Properties": {
+              "BatchSize": 10,
+              "EventSourceArn": "arn:aws:sqs:ap-northeast-2:311141557640:Chap2CrawlerQueue",
+              "FunctionName": {
+                "Fn::GetAtt": [
+                  "CrawlImagesLambdaFunction",
+                  "Arn"
+                ]
+              },
+              "Enabled": true
+            }
+          }
+        },
+        "Outputs": {
+          "ServerlessDeploymentBucketName": {
+            "Value": "serverless-framework-deployments-ap-northeast-2-21f132c7-a2b2",
+            "Export": {
+              "Name": "sls-crawler-service-dev-ServerlessDeploymentBucketName"
+            }
+          },
+          "CrawlImagesLambdaFunctionQualifiedArn": {
+            "Description": "Current Lambda function version",
+            "Value": {
+              "Ref": "CrawlImagesLambdaVersionC7wC1U2hdSfC93RuletURxe9AL73omsDbCnXQymzyg"
+            },
+            "Export": {
+              "Name": "sls-crawler-service-dev-CrawlImagesLambdaFunctionQualifiedArn"
+            }
+          }
+        }
+      },
+      "vpc": {}
+    },
+    "custom": {
+      "bucket": "hhcrawlerbucket",
+      "crawlerqueue": "Chap2CrawlerQueue",
+      "analysisqueue": "Chap2AnalysisQueue",
+      "region": "ap-northeast-2",
+      "accountid": "311141557640"
+    },
+    "pluginsData": {},
+    "functions": {
+      "crawlImages": {
+        "handler": "handler.crawlImages",
+        "environment": {
+          "BUCKET": "hhcrawlerbucket",
+          "ANALYSIS_QUEUE": "Chap2AnalysisQueue",
+          "REGION": "ap-northeast-2",
+          "ACCOUNTID": "311141557640"
+        },
+        "events": [
+          {
+            "sqs": {
+              "arn": "arn:aws:sqs:ap-northeast-2:311141557640:Chap2CrawlerQueue"
+            }
+          }
+        ],
+        "name": "crawler-service-dev-crawlImages",
+        "package": {},
+        "memory": 1024,
+        "timeout": 6,
+        "runtime": "nodejs20.x",
+        "vpc": {},
+        "versionLogicalId": "CrawlImagesLambdaVersionC7wC1U2hdSfC93RuletURxe9AL73omsDbCnXQymzyg"
+      }
+    },
+    "configValidationMode": "warn",
+    "serviceFilename": "serverless",
+    "initialServerlessConfig": {
+      "service": "crawler-service",
+      "frameworkVersion": ">=4.0.0",
+      "custom": {
+        "$ref": "$[\"service\"][\"custom\"]"
+      },
+      "provider": {
+        "$ref": "$[\"service\"][\"provider\"]"
+      },
+      "functions": {
+        "$ref": "$[\"service\"][\"functions\"]"
+      }
+    },
+    "appId": null,
+    "orgId": null,
+    "layers": {},
+    "artifact": "/Users/hhnho/workspace/ai-service/ai-as-a-service/chapter2-3/crawler-service/.serverless/crawler-service.zip"
+  },
+  "package": {
+    "artifactDirectoryName": "serverless/crawler-service/dev/1739093826653-2025-02-09T09:37:06.653Z",
+    "artifact": "crawler-service.zip"
+  }
+}

@@ -1,0 +1,777 @@
+{
+  "/Users/hhnho/workspace/ai-service/ai-as-a-service/chapter2-3/analysis-service/serverless.yml": {
+    "versionFramework": "4.6.2",
+    "servicePath": "/Users/hhnho/workspace/ai-service/ai-as-a-service/chapter2-3/analysis-service/serverless.yml",
+    "serviceConfigFileName": "serverless.yml",
+    "service": {
+      "service": "analysis-service",
+      "frameworkVersion": ">=4.0.0",
+      "custom": {
+        "bucket": "hhcrawlerbucket",
+        "analysisqueue": "Chap2AnalysisQueue",
+        "region": "ap-northeast-2",
+        "accountid": "311141557640"
+      },
+      "provider": {
+        "name": "aws",
+        "runtime": "nodejs20.x",
+        "region": "ap-northeast-2",
+        "memorySize": 512,
+        "timeout": 10,
+        "stage": "dev",
+        "iamRoleStatements": [
+          {
+            "Effect": "Allow",
+            "Action": [
+              "s3:*"
+            ],
+            "Resource": "*"
+          },
+          {
+            "Effect": "Allow",
+            "Action": [
+              "rekognition:*"
+            ],
+            "Resource": "*"
+          },
+          {
+            "Effect": "Allow",
+            "Action": [
+              "sqs:ListQueues"
+            ],
+            "Resource": "arn:aws:sqs:ap-northeast-2::*"
+          },
+          {
+            "Effect": "Allow",
+            "Action": [
+              "sqs:ReceiveMessage",
+              "sqs:DeleteMessage",
+              "sqs:GetQueueUrl"
+            ],
+            "Resource": "arn:aws:sqs:*:*:Chap2AnalysisQueue"
+          }
+        ],
+        "versionFunctions": true,
+        "compiledCloudFormationTemplate": {
+          "AWSTemplateFormatVersion": "2010-09-09",
+          "Description": "The AWS CloudFormation template for this Serverless application",
+          "Resources": {
+            "AnalyzeImagesLogGroup": {
+              "Type": "AWS::Logs::LogGroup",
+              "Properties": {
+                "LogGroupName": "/aws/lambda/analysis-service-dev-analyzeImages"
+              }
+            },
+            "IamRoleLambdaExecution": {
+              "Type": "AWS::IAM::Role",
+              "Properties": {
+                "AssumeRolePolicyDocument": {
+                  "Version": "2012-10-17",
+                  "Statement": [
+                    {
+                      "Effect": "Allow",
+                      "Principal": {
+                        "Service": [
+                          "lambda.amazonaws.com"
+                        ]
+                      },
+                      "Action": [
+                        "sts:AssumeRole"
+                      ]
+                    }
+                  ]
+                },
+                "Policies": [
+                  {
+                    "PolicyName": {
+                      "Fn::Join": [
+                        "-",
+                        [
+                          "analysis-service",
+                          "dev",
+                          "lambda"
+                        ]
+                      ]
+                    },
+                    "PolicyDocument": {
+                      "Version": "2012-10-17",
+                      "Statement": [
+                        {
+                          "Effect": "Allow",
+                          "Action": [
+                            "logs:CreateLogStream",
+                            "logs:CreateLogGroup",
+                            "logs:TagResource"
+                          ],
+                          "Resource": [
+                            {
+                              "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/analysis-service-dev*:*"
+                            }
+                          ]
+                        },
+                        {
+                          "Effect": "Allow",
+                          "Action": [
+                            "logs:PutLogEvents"
+                          ],
+                          "Resource": [
+                            {
+                              "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/analysis-service-dev*:*:*"
+                            }
+                          ]
+                        },
+                        {
+                          "Effect": "Allow",
+                          "Action": [
+                            "s3:*"
+                          ],
+                          "Resource": "*"
+                        },
+                        {
+                          "Effect": "Allow",
+                          "Action": [
+                            "rekognition:*"
+                          ],
+                          "Resource": "*"
+                        },
+                        {
+                          "Effect": "Allow",
+                          "Action": [
+                            "sqs:ListQueues"
+                          ],
+                          "Resource": "arn:aws:sqs:ap-northeast-2::*"
+                        },
+                        {
+                          "Effect": "Allow",
+                          "Action": [
+                            "sqs:ReceiveMessage",
+                            "sqs:DeleteMessage",
+                            "sqs:GetQueueUrl"
+                          ],
+                          "Resource": "arn:aws:sqs:*:*:Chap2AnalysisQueue"
+                        },
+                        {
+                          "Effect": "Allow",
+                          "Action": [
+                            "sqs:ReceiveMessage",
+                            "sqs:DeleteMessage",
+                            "sqs:GetQueueAttributes"
+                          ],
+                          "Resource": [
+                            "arn:aws:sqs:ap-northeast-2:311141557640:Chap2AnalysisQueue"
+                          ]
+                        }
+                      ]
+                    }
+                  }
+                ],
+                "Path": "/",
+                "RoleName": {
+                  "Fn::Join": [
+                    "-",
+                    [
+                      "analysis-service",
+                      "dev",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      "lambdaRole"
+                    ]
+                  ]
+                }
+              }
+            },
+            "AnalyzeImagesLambdaFunction": {
+              "Type": "AWS::Lambda::Function",
+              "Properties": {
+                "Code": {
+                  "S3Bucket": "serverless-framework-deployments-ap-northeast-2-21f132c7-a2b2",
+                  "S3Key": "serverless/analysis-service/dev/1739091276727-2025-02-09T08:54:36.727Z/analysis-service.zip"
+                },
+                "Handler": "handler.analyzeImages",
+                "Runtime": "nodejs20.x",
+                "FunctionName": "analysis-service-dev-analyzeImages",
+                "MemorySize": 512,
+                "Timeout": 10,
+                "Environment": {
+                  "Variables": {
+                    "BUCKET": "hhcrawlerbucket",
+                    "REGION": "ap-northeast-2",
+                    "ACCOUNTID": "311141557640"
+                  }
+                },
+                "Role": {
+                  "Fn::GetAtt": [
+                    "IamRoleLambdaExecution",
+                    "Arn"
+                  ]
+                }
+              },
+              "DependsOn": [
+                "AnalyzeImagesLogGroup"
+              ]
+            },
+            "AnalyzeImagesLambdaVersionbDTd3wplaW2Amtxfs8XyPXXraVQjWOH2bfxADqdDPRM": {
+              "Type": "AWS::Lambda::Version",
+              "DeletionPolicy": "Retain",
+              "Properties": {
+                "FunctionName": {
+                  "Ref": "AnalyzeImagesLambdaFunction"
+                },
+                "CodeSha256": "Kraok1yY5WGNABhZ6iuCMQUOyo9AY9x1QRkr+E67RHI="
+              }
+            },
+            "AnalyzeImagesEventSourceMappingSQSChap2AnalysisQueue": {
+              "Type": "AWS::Lambda::EventSourceMapping",
+              "DependsOn": [
+                "IamRoleLambdaExecution"
+              ],
+              "Properties": {
+                "BatchSize": 10,
+                "EventSourceArn": "arn:aws:sqs:ap-northeast-2:311141557640:Chap2AnalysisQueue",
+                "FunctionName": {
+                  "Fn::GetAtt": [
+                    "AnalyzeImagesLambdaFunction",
+                    "Arn"
+                  ]
+                },
+                "Enabled": true
+              }
+            }
+          },
+          "Outputs": {
+            "ServerlessDeploymentBucketName": {
+              "Value": "serverless-framework-deployments-ap-northeast-2-21f132c7-a2b2",
+              "Export": {
+                "Name": "sls-analysis-service-dev-ServerlessDeploymentBucketName"
+              }
+            },
+            "AnalyzeImagesLambdaFunctionQualifiedArn": {
+              "Description": "Current Lambda function version",
+              "Value": {
+                "Ref": "AnalyzeImagesLambdaVersionbDTd3wplaW2Amtxfs8XyPXXraVQjWOH2bfxADqdDPRM"
+              },
+              "Export": {
+                "Name": "sls-analysis-service-dev-AnalyzeImagesLambdaFunctionQualifiedArn"
+              }
+            }
+          }
+        },
+        "vpc": {}
+      },
+      "functions": {
+        "analyzeImages": {
+          "handler": "handler.analyzeImages",
+          "environment": {
+            "BUCKET": "hhcrawlerbucket",
+            "REGION": "ap-northeast-2",
+            "ACCOUNTID": "311141557640"
+          },
+          "events": [
+            {
+              "sqs": {
+                "arn": "arn:aws:sqs:ap-northeast-2:311141557640:Chap2AnalysisQueue"
+              }
+            }
+          ],
+          "name": "analysis-service-dev-analyzeImages",
+          "package": {},
+          "memory": 512,
+          "timeout": 10,
+          "runtime": "nodejs20.x",
+          "vpc": {},
+          "versionLogicalId": "AnalyzeImagesLambdaVersionbDTd3wplaW2Amtxfs8XyPXXraVQjWOH2bfxADqdDPRM"
+        }
+      }
+    },
+    "provider": {
+      "name": "aws",
+      "runtime": "nodejs20.x",
+      "region": "ap-northeast-2",
+      "memorySize": 512,
+      "timeout": 10,
+      "stage": "dev",
+      "iamRoleStatements": [
+        {
+          "Effect": "Allow",
+          "Action": [
+            "s3:*"
+          ],
+          "Resource": "*"
+        },
+        {
+          "Effect": "Allow",
+          "Action": [
+            "rekognition:*"
+          ],
+          "Resource": "*"
+        },
+        {
+          "Effect": "Allow",
+          "Action": [
+            "sqs:ListQueues"
+          ],
+          "Resource": "arn:aws:sqs:ap-northeast-2::*"
+        },
+        {
+          "Effect": "Allow",
+          "Action": [
+            "sqs:ReceiveMessage",
+            "sqs:DeleteMessage",
+            "sqs:GetQueueUrl"
+          ],
+          "Resource": "arn:aws:sqs:*:*:Chap2AnalysisQueue"
+        }
+      ],
+      "versionFunctions": true,
+      "compiledCloudFormationTemplate": {
+        "AWSTemplateFormatVersion": "2010-09-09",
+        "Description": "The AWS CloudFormation template for this Serverless application",
+        "Resources": {
+          "AnalyzeImagesLogGroup": {
+            "Type": "AWS::Logs::LogGroup",
+            "Properties": {
+              "LogGroupName": "/aws/lambda/analysis-service-dev-analyzeImages"
+            }
+          },
+          "IamRoleLambdaExecution": {
+            "Type": "AWS::IAM::Role",
+            "Properties": {
+              "AssumeRolePolicyDocument": {
+                "Version": "2012-10-17",
+                "Statement": [
+                  {
+                    "Effect": "Allow",
+                    "Principal": {
+                      "Service": [
+                        "lambda.amazonaws.com"
+                      ]
+                    },
+                    "Action": [
+                      "sts:AssumeRole"
+                    ]
+                  }
+                ]
+              },
+              "Policies": [
+                {
+                  "PolicyName": {
+                    "Fn::Join": [
+                      "-",
+                      [
+                        "analysis-service",
+                        "dev",
+                        "lambda"
+                      ]
+                    ]
+                  },
+                  "PolicyDocument": {
+                    "Version": "2012-10-17",
+                    "Statement": [
+                      {
+                        "Effect": "Allow",
+                        "Action": [
+                          "logs:CreateLogStream",
+                          "logs:CreateLogGroup",
+                          "logs:TagResource"
+                        ],
+                        "Resource": [
+                          {
+                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/analysis-service-dev*:*"
+                          }
+                        ]
+                      },
+                      {
+                        "Effect": "Allow",
+                        "Action": [
+                          "logs:PutLogEvents"
+                        ],
+                        "Resource": [
+                          {
+                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/analysis-service-dev*:*:*"
+                          }
+                        ]
+                      },
+                      {
+                        "Effect": "Allow",
+                        "Action": [
+                          "s3:*"
+                        ],
+                        "Resource": "*"
+                      },
+                      {
+                        "Effect": "Allow",
+                        "Action": [
+                          "rekognition:*"
+                        ],
+                        "Resource": "*"
+                      },
+                      {
+                        "Effect": "Allow",
+                        "Action": [
+                          "sqs:ListQueues"
+                        ],
+                        "Resource": "arn:aws:sqs:ap-northeast-2::*"
+                      },
+                      {
+                        "Effect": "Allow",
+                        "Action": [
+                          "sqs:ReceiveMessage",
+                          "sqs:DeleteMessage",
+                          "sqs:GetQueueUrl"
+                        ],
+                        "Resource": "arn:aws:sqs:*:*:Chap2AnalysisQueue"
+                      },
+                      {
+                        "Effect": "Allow",
+                        "Action": [
+                          "sqs:ReceiveMessage",
+                          "sqs:DeleteMessage",
+                          "sqs:GetQueueAttributes"
+                        ],
+                        "Resource": [
+                          "arn:aws:sqs:ap-northeast-2:311141557640:Chap2AnalysisQueue"
+                        ]
+                      }
+                    ]
+                  }
+                }
+              ],
+              "Path": "/",
+              "RoleName": {
+                "Fn::Join": [
+                  "-",
+                  [
+                    "analysis-service",
+                    "dev",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    "lambdaRole"
+                  ]
+                ]
+              }
+            }
+          },
+          "AnalyzeImagesLambdaFunction": {
+            "Type": "AWS::Lambda::Function",
+            "Properties": {
+              "Code": {
+                "S3Bucket": "serverless-framework-deployments-ap-northeast-2-21f132c7-a2b2",
+                "S3Key": "serverless/analysis-service/dev/1739091276727-2025-02-09T08:54:36.727Z/analysis-service.zip"
+              },
+              "Handler": "handler.analyzeImages",
+              "Runtime": "nodejs20.x",
+              "FunctionName": "analysis-service-dev-analyzeImages",
+              "MemorySize": 512,
+              "Timeout": 10,
+              "Environment": {
+                "Variables": {
+                  "BUCKET": "hhcrawlerbucket",
+                  "REGION": "ap-northeast-2",
+                  "ACCOUNTID": "311141557640"
+                }
+              },
+              "Role": {
+                "Fn::GetAtt": [
+                  "IamRoleLambdaExecution",
+                  "Arn"
+                ]
+              }
+            },
+            "DependsOn": [
+              "AnalyzeImagesLogGroup"
+            ]
+          },
+          "AnalyzeImagesLambdaVersionbDTd3wplaW2Amtxfs8XyPXXraVQjWOH2bfxADqdDPRM": {
+            "Type": "AWS::Lambda::Version",
+            "DeletionPolicy": "Retain",
+            "Properties": {
+              "FunctionName": {
+                "Ref": "AnalyzeImagesLambdaFunction"
+              },
+              "CodeSha256": "Kraok1yY5WGNABhZ6iuCMQUOyo9AY9x1QRkr+E67RHI="
+            }
+          },
+          "AnalyzeImagesEventSourceMappingSQSChap2AnalysisQueue": {
+            "Type": "AWS::Lambda::EventSourceMapping",
+            "DependsOn": [
+              "IamRoleLambdaExecution"
+            ],
+            "Properties": {
+              "BatchSize": 10,
+              "EventSourceArn": "arn:aws:sqs:ap-northeast-2:311141557640:Chap2AnalysisQueue",
+              "FunctionName": {
+                "Fn::GetAtt": [
+                  "AnalyzeImagesLambdaFunction",
+                  "Arn"
+                ]
+              },
+              "Enabled": true
+            }
+          }
+        },
+        "Outputs": {
+          "ServerlessDeploymentBucketName": {
+            "Value": "serverless-framework-deployments-ap-northeast-2-21f132c7-a2b2",
+            "Export": {
+              "Name": "sls-analysis-service-dev-ServerlessDeploymentBucketName"
+            }
+          },
+          "AnalyzeImagesLambdaFunctionQualifiedArn": {
+            "Description": "Current Lambda function version",
+            "Value": {
+              "Ref": "AnalyzeImagesLambdaVersionbDTd3wplaW2Amtxfs8XyPXXraVQjWOH2bfxADqdDPRM"
+            },
+            "Export": {
+              "Name": "sls-analysis-service-dev-AnalyzeImagesLambdaFunctionQualifiedArn"
+            }
+          }
+        }
+      },
+      "vpc": {}
+    },
+    "dashboard": {
+      "isEnabledForService": false,
+      "requiredAuthentication": false,
+      "orgFeaturesInUse": null,
+      "orgObservabilityIntegrations": null,
+      "serviceAppId": null,
+      "serviceProvider": null,
+      "instanceParameters": null
+    },
+    "serviceRawFile": "service: analysis-service\nframeworkVersion: \">=4.0.0\"\ncustom:\n  bucket: ${env:CHAPTER2_BUCKET}\n  analysisqueue: Chap2AnalysisQueue\n  region: ${env:AWS_DEFAULT_REGION, 'ap-northeast-2'}\n  accountid: ${env:AWS_ACCOUNT_ID}\n\nprovider:\n  name: aws\n  runtime: nodejs20.x\n  region: ${env:AWS_DEFAULT_REGION, 'ap-northeast-2'}\n  memorySize: 512\n  timeout: 10\n  stage: dev\n  iamRoleStatements:\n    - Effect: Allow\n      Action:\n        - s3:*\n      Resource: \"*\"\n    - Effect: \"Allow\"\n      Action:\n        - \"rekognition:*\"\n      Resource: \"*\"\n    - Effect: Allow\n      Action:\n        - sqs:ListQueues\n      Resource: \"arn:aws:sqs:${self:provider.region}::*\"\n    - Effect: Allow\n      Action:\n        - sqs:ReceiveMessage\n        - sqs:DeleteMessage\n        - sqs:GetQueueUrl\n      Resource: \"arn:aws:sqs:*:*:${self:custom.analysisqueue}\"\n\nfunctions:\n  analyzeImages:\n    handler: handler.analyzeImages\n    environment:\n      BUCKET: ${self:custom.bucket}\n      REGION: ${self:custom.region}\n      ACCOUNTID: ${self:custom.accountid}\n    events:\n      - sqs:\n          arn: \"arn:aws:sqs:${self:provider.region}:${env:AWS_ACCOUNT_ID}:${self:custom.analysisqueue}\"\n\n",
+    "command": [
+      "deploy"
+    ],
+    "options": {},
+    "orgId": "e96515c3-4983-43a3-9b01-d17f2a06b0a6",
+    "orgName": "hhnho",
+    "userId": "HC3vSWQknxflnHjkCs",
+    "userName": "hhnho",
+    "serviceProviderAwsAccountId": "311141557640",
+    "serviceProviderAwsCfStackName": "analysis-service-dev",
+    "serviceProviderAwsCfStackId": "arn:aws:cloudformation:ap-northeast-2:311141557640:stack/analysis-service-dev/7e845e30-e6c3-11ef-8a1a-0a028aa9f1cd",
+    "serviceProviderAwsCfStackCreated": "2025-02-09T08:54:38.810Z",
+    "serviceProviderAwsCfStackUpdated": null,
+    "serviceProviderAwsCfStackStatus": "CREATE_COMPLETE",
+    "serviceProviderAwsCfStackOutputs": [
+      {
+        "OutputKey": "AnalyzeImagesLambdaFunctionQualifiedArn",
+        "OutputValue": "arn:aws:lambda:ap-northeast-2:311141557640:function:analysis-service-dev-analyzeImages:1",
+        "Description": "Current Lambda function version",
+        "ExportName": "sls-analysis-service-dev-AnalyzeImagesLambdaFunctionQualifiedArn"
+      },
+      {
+        "OutputKey": "ServerlessDeploymentBucketName",
+        "OutputValue": "serverless-framework-deployments-ap-northeast-2-21f132c7-a2b2",
+        "ExportName": "sls-analysis-service-dev-ServerlessDeploymentBucketName"
+      }
+    ],
+    "compiledCloudFormationTemplate": {
+      "AWSTemplateFormatVersion": "2010-09-09",
+      "Description": "The AWS CloudFormation template for this Serverless application",
+      "Resources": {
+        "AnalyzeImagesLogGroup": {
+          "Type": "AWS::Logs::LogGroup",
+          "Properties": {
+            "LogGroupName": "/aws/lambda/analysis-service-dev-analyzeImages"
+          }
+        },
+        "IamRoleLambdaExecution": {
+          "Type": "AWS::IAM::Role",
+          "Properties": {
+            "AssumeRolePolicyDocument": {
+              "Version": "2012-10-17",
+              "Statement": [
+                {
+                  "Effect": "Allow",
+                  "Principal": {
+                    "Service": [
+                      "lambda.amazonaws.com"
+                    ]
+                  },
+                  "Action": [
+                    "sts:AssumeRole"
+                  ]
+                }
+              ]
+            },
+            "Policies": [
+              {
+                "PolicyName": {
+                  "Fn::Join": [
+                    "-",
+                    [
+                      "analysis-service",
+                      "dev",
+                      "lambda"
+                    ]
+                  ]
+                },
+                "PolicyDocument": {
+                  "Version": "2012-10-17",
+                  "Statement": [
+                    {
+                      "Effect": "Allow",
+                      "Action": [
+                        "logs:CreateLogStream",
+                        "logs:CreateLogGroup",
+                        "logs:TagResource"
+                      ],
+                      "Resource": [
+                        {
+                          "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/analysis-service-dev*:*"
+                        }
+                      ]
+                    },
+                    {
+                      "Effect": "Allow",
+                      "Action": [
+                        "logs:PutLogEvents"
+                      ],
+                      "Resource": [
+                        {
+                          "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/analysis-service-dev*:*:*"
+                        }
+                      ]
+                    },
+                    {
+                      "Effect": "Allow",
+                      "Action": [
+                        "s3:*"
+                      ],
+                      "Resource": "*"
+                    },
+                    {
+                      "Effect": "Allow",
+                      "Action": [
+                        "rekognition:*"
+                      ],
+                      "Resource": "*"
+                    },
+                    {
+                      "Effect": "Allow",
+                      "Action": [
+                        "sqs:ListQueues"
+                      ],
+                      "Resource": "arn:aws:sqs:ap-northeast-2::*"
+                    },
+                    {
+                      "Effect": "Allow",
+                      "Action": [
+                        "sqs:ReceiveMessage",
+                        "sqs:DeleteMessage",
+                        "sqs:GetQueueUrl"
+                      ],
+                      "Resource": "arn:aws:sqs:*:*:Chap2AnalysisQueue"
+                    },
+                    {
+                      "Effect": "Allow",
+                      "Action": [
+                        "sqs:ReceiveMessage",
+                        "sqs:DeleteMessage",
+                        "sqs:GetQueueAttributes"
+                      ],
+                      "Resource": [
+                        "arn:aws:sqs:ap-northeast-2:311141557640:Chap2AnalysisQueue"
+                      ]
+                    }
+                  ]
+                }
+              }
+            ],
+            "Path": "/",
+            "RoleName": {
+              "Fn::Join": [
+                "-",
+                [
+                  "analysis-service",
+                  "dev",
+                  {
+                    "Ref": "AWS::Region"
+                  },
+                  "lambdaRole"
+                ]
+              ]
+            }
+          }
+        },
+        "AnalyzeImagesLambdaFunction": {
+          "Type": "AWS::Lambda::Function",
+          "Properties": {
+            "Code": {
+              "S3Bucket": "serverless-framework-deployments-ap-northeast-2-21f132c7-a2b2",
+              "S3Key": "serverless/analysis-service/dev/1739091276727-2025-02-09T08:54:36.727Z/analysis-service.zip"
+            },
+            "Handler": "handler.analyzeImages",
+            "Runtime": "nodejs20.x",
+            "FunctionName": "analysis-service-dev-analyzeImages",
+            "MemorySize": 512,
+            "Timeout": 10,
+            "Environment": {
+              "Variables": {
+                "BUCKET": "hhcrawlerbucket",
+                "REGION": "ap-northeast-2",
+                "ACCOUNTID": "311141557640"
+              }
+            },
+            "Role": {
+              "Fn::GetAtt": [
+                "IamRoleLambdaExecution",
+                "Arn"
+              ]
+            }
+          },
+          "DependsOn": [
+            "AnalyzeImagesLogGroup"
+          ]
+        },
+        "AnalyzeImagesLambdaVersionbDTd3wplaW2Amtxfs8XyPXXraVQjWOH2bfxADqdDPRM": {
+          "Type": "AWS::Lambda::Version",
+          "DeletionPolicy": "Retain",
+          "Properties": {
+            "FunctionName": {
+              "Ref": "AnalyzeImagesLambdaFunction"
+            },
+            "CodeSha256": "Kraok1yY5WGNABhZ6iuCMQUOyo9AY9x1QRkr+E67RHI="
+          }
+        },
+        "AnalyzeImagesEventSourceMappingSQSChap2AnalysisQueue": {
+          "Type": "AWS::Lambda::EventSourceMapping",
+          "DependsOn": [
+            "IamRoleLambdaExecution"
+          ],
+          "Properties": {
+            "BatchSize": 10,
+            "EventSourceArn": "arn:aws:sqs:ap-northeast-2:311141557640:Chap2AnalysisQueue",
+            "FunctionName": {
+              "Fn::GetAtt": [
+                "AnalyzeImagesLambdaFunction",
+                "Arn"
+              ]
+            },
+            "Enabled": true
+          }
+        }
+      },
+      "Outputs": {
+        "ServerlessDeploymentBucketName": {
+          "Value": "serverless-framework-deployments-ap-northeast-2-21f132c7-a2b2",
+          "Export": {
+            "Name": "sls-analysis-service-dev-ServerlessDeploymentBucketName"
+          }
+        },
+        "AnalyzeImagesLambdaFunctionQualifiedArn": {
+          "Description": "Current Lambda function version",
+          "Value": {
+            "Ref": "AnalyzeImagesLambdaVersionbDTd3wplaW2Amtxfs8XyPXXraVQjWOH2bfxADqdDPRM"
+          },
+          "Export": {
+            "Name": "sls-analysis-service-dev-AnalyzeImagesLambdaFunctionQualifiedArn"
+          }
+        }
+      }
+    }
+  }
+}
