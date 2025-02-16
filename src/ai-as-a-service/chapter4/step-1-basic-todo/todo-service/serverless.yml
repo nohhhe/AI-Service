@@ -1,11 +1,11 @@
 service: chapter4-todo
-frameworkVersion: ">=1.30.0"
+frameworkVersion: ">=4.0.0"
 plugins:
   - serverless-offline
   - serverless-domain-manager
   - serverless-dotenv-plugin
 custom:
-  region: ${env:AWS_DEFAULT_REGION, 'eu-west-1'}
+  region: ${env:AWS_DEFAULT_REGION, 'ap-northeast-2'}
   accountid: ${env:AWS_ACCOUNT_ID}
   domain: ${env:CHAPTER4_DOMAIN}
   dotenv:
@@ -23,9 +23,9 @@ custom:
 
 provider:
   name: aws
-  runtime: nodejs14.x
+  runtime: nodejs20.x
   stage: ${opt:stage, 'dev'}
-  region: ${env:AWS_DEFAULT_REGION, 'eu-west-1'}
+  region: ${env:AWS_DEFAULT_REGION, 'ap-northeast-2'}
   environment:
     TODO_TABLE: '${self:service}-${self:provider.stage}'
   iamRoleStatements:

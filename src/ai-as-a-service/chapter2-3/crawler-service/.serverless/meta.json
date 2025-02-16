@@ -1,7 +1,7 @@
 {
-  "/Users/hhnho/workspace/ai-service/ai-as-a-service/chapter2-3/crawler-service/serverless.yml": {
+  "/Users/hhnho/workspace/ai-service/src/ai-as-a-service/chapter2-3/crawler-service/serverless.yml": {
     "versionFramework": "4.6.2",
-    "servicePath": "/Users/hhnho/workspace/ai-service/ai-as-a-service/chapter2-3/crawler-service/serverless.yml",
+    "servicePath": "/Users/hhnho/workspace/ai-service/src/ai-as-a-service/chapter2-3/crawler-service/serverless.yml",
     "serviceConfigFileName": "serverless.yml",
     "service": {
       "service": "crawler-service",
@@ -189,7 +189,7 @@
               "Properties": {
                 "Code": {
                   "S3Bucket": "serverless-framework-deployments-ap-northeast-2-21f132c7-a2b2",
-                  "S3Key": "serverless/crawler-service/dev/1739093826653-2025-02-09T09:37:06.653Z/crawler-service.zip"
+                  "S3Key": "serverless/crawler-service/dev/1739720086870-2025-02-16T15:34:46.870Z/crawler-service.zip"
                 },
                 "Handler": "handler.crawlImages",
                 "Runtime": "nodejs20.x",
@@ -215,14 +215,14 @@
                 "CrawlImagesLogGroup"
               ]
             },
-            "CrawlImagesLambdaVersionC7wC1U2hdSfC93RuletURxe9AL73omsDbCnXQymzyg": {
+            "CrawlImagesLambdaVersionQt1gxeHjhRNiG614a3unjETWLFrF1tbmrAcnwg8U": {
               "Type": "AWS::Lambda::Version",
               "DeletionPolicy": "Retain",
               "Properties": {
                 "FunctionName": {
                   "Ref": "CrawlImagesLambdaFunction"
                 },
-                "CodeSha256": "TX5odHxrPzCp3VLMXUtniVAw4lrwXif+lshO5rXEKf8="
+                "CodeSha256": "8Su/dtKnVh1nOeRlXHy+eXDXFJMH+vm2PuRnCxTXi3M="
               }
             },
             "CrawlImagesEventSourceMappingSQSChap2CrawlerQueue": {
@@ -253,7 +253,7 @@
             "CrawlImagesLambdaFunctionQualifiedArn": {
               "Description": "Current Lambda function version",
               "Value": {
-                "Ref": "CrawlImagesLambdaVersionC7wC1U2hdSfC93RuletURxe9AL73omsDbCnXQymzyg"
+                "Ref": "CrawlImagesLambdaVersionQt1gxeHjhRNiG614a3unjETWLFrF1tbmrAcnwg8U"
               },
               "Export": {
                 "Name": "sls-crawler-service-dev-CrawlImagesLambdaFunctionQualifiedArn"
@@ -285,7 +285,7 @@
           "timeout": 6,
           "runtime": "nodejs20.x",
           "vpc": {},
-          "versionLogicalId": "CrawlImagesLambdaVersionC7wC1U2hdSfC93RuletURxe9AL73omsDbCnXQymzyg"
+          "versionLogicalId": "CrawlImagesLambdaVersionQt1gxeHjhRNiG614a3unjETWLFrF1tbmrAcnwg8U"
         }
       }
     },
@@ -465,7 +465,7 @@
             "Properties": {
               "Code": {
                 "S3Bucket": "serverless-framework-deployments-ap-northeast-2-21f132c7-a2b2",
-                "S3Key": "serverless/crawler-service/dev/1739093826653-2025-02-09T09:37:06.653Z/crawler-service.zip"
+                "S3Key": "serverless/crawler-service/dev/1739720086870-2025-02-16T15:34:46.870Z/crawler-service.zip"
               },
               "Handler": "handler.crawlImages",
               "Runtime": "nodejs20.x",
@@ -491,14 +491,14 @@
               "CrawlImagesLogGroup"
             ]
           },
-          "CrawlImagesLambdaVersionC7wC1U2hdSfC93RuletURxe9AL73omsDbCnXQymzyg": {
+          "CrawlImagesLambdaVersionQt1gxeHjhRNiG614a3unjETWLFrF1tbmrAcnwg8U": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "CrawlImagesLambdaFunction"
               },
-              "CodeSha256": "TX5odHxrPzCp3VLMXUtniVAw4lrwXif+lshO5rXEKf8="
+              "CodeSha256": "8Su/dtKnVh1nOeRlXHy+eXDXFJMH+vm2PuRnCxTXi3M="
             }
           },
           "CrawlImagesEventSourceMappingSQSChap2CrawlerQueue": {
@@ -529,7 +529,7 @@
           "CrawlImagesLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "CrawlImagesLambdaVersionC7wC1U2hdSfC93RuletURxe9AL73omsDbCnXQymzyg"
+              "Ref": "CrawlImagesLambdaVersionQt1gxeHjhRNiG614a3unjETWLFrF1tbmrAcnwg8U"
             },
             "Export": {
               "Name": "sls-crawler-service-dev-CrawlImagesLambdaFunctionQualifiedArn"
@@ -561,12 +561,12 @@
     "serviceProviderAwsCfStackName": "crawler-service-dev",
     "serviceProviderAwsCfStackId": "arn:aws:cloudformation:ap-northeast-2:311141557640:stack/crawler-service-dev/ffe023f0-e174-11ef-8a1a-0a028aa9f1cd",
     "serviceProviderAwsCfStackCreated": "2025-02-02T14:50:09.805Z",
-    "serviceProviderAwsCfStackUpdated": "2025-02-09T09:36:37.810Z",
+    "serviceProviderAwsCfStackUpdated": "2025-02-09T09:37:10.878Z",
     "serviceProviderAwsCfStackStatus": "UPDATE_COMPLETE",
     "serviceProviderAwsCfStackOutputs": [
       {
         "OutputKey": "CrawlImagesLambdaFunctionQualifiedArn",
-        "OutputValue": "arn:aws:lambda:ap-northeast-2:311141557640:function:crawler-service-dev-crawlImages:9",
+        "OutputValue": "arn:aws:lambda:ap-northeast-2:311141557640:function:crawler-service-dev-crawlImages:10",
         "Description": "Current Lambda function version",
         "ExportName": "sls-crawler-service-dev-CrawlImagesLambdaFunctionQualifiedArn"
       },
@@ -712,7 +712,7 @@
           "Properties": {
             "Code": {
               "S3Bucket": "serverless-framework-deployments-ap-northeast-2-21f132c7-a2b2",
-              "S3Key": "serverless/crawler-service/dev/1739093826653-2025-02-09T09:37:06.653Z/crawler-service.zip"
+              "S3Key": "serverless/crawler-service/dev/1739720086870-2025-02-16T15:34:46.870Z/crawler-service.zip"
             },
             "Handler": "handler.crawlImages",
             "Runtime": "nodejs20.x",
@@ -738,14 +738,14 @@
             "CrawlImagesLogGroup"
           ]
         },
-        "CrawlImagesLambdaVersionC7wC1U2hdSfC93RuletURxe9AL73omsDbCnXQymzyg": {
+        "CrawlImagesLambdaVersionQt1gxeHjhRNiG614a3unjETWLFrF1tbmrAcnwg8U": {
           "Type": "AWS::Lambda::Version",
           "DeletionPolicy": "Retain",
           "Properties": {
             "FunctionName": {
               "Ref": "CrawlImagesLambdaFunction"
             },
-            "CodeSha256": "TX5odHxrPzCp3VLMXUtniVAw4lrwXif+lshO5rXEKf8="
+            "CodeSha256": "8Su/dtKnVh1nOeRlXHy+eXDXFJMH+vm2PuRnCxTXi3M="
           }
         },
         "CrawlImagesEventSourceMappingSQSChap2CrawlerQueue": {
@@ -776,7 +776,7 @@
         "CrawlImagesLambdaFunctionQualifiedArn": {
           "Description": "Current Lambda function version",
           "Value": {
-            "Ref": "CrawlImagesLambdaVersionC7wC1U2hdSfC93RuletURxe9AL73omsDbCnXQymzyg"
+            "Ref": "CrawlImagesLambdaVersionQt1gxeHjhRNiG614a3unjETWLFrF1tbmrAcnwg8U"
           },
           "Export": {
             "Name": "sls-crawler-service-dev-CrawlImagesLambdaFunctionQualifiedArn"

@@ -1,10 +1,10 @@
 service: chapter4-frontend
-frameworkVersion: ">=1.30.0"
+frameworkVersion: ">=4.0.0"
 plugins:
   - serverless-dotenv-plugin
 custom:
   bucket: ${env:CHAPTER4_BUCKET}
-  region: ${env:AWS_DEFAULT_REGION, 'eu-west-1'}
+  region: ${env:AWS_DEFAULT_REGION, 'ap-northeast-2'}
   accountid: ${env:AWS_ACCOUNT_ID}
   dotenv:
     path: ../.env
@@ -13,7 +13,7 @@ provider:
   name: aws
   runtime: nodejs12.x
   stage: ${opt:stage, 'dev'}
-  region: ${env:AWS_DEFAULT_REGION, 'eu-west-1'}
+  region: ${env:AWS_DEFAULT_REGION, 'ap-northeast-2'}
 
 resources:
   Resources:

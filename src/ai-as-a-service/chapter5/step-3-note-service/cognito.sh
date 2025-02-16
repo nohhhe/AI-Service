@@ -18,7 +18,7 @@ case $1 in
     export CHAPTER4_POOL_CLIENT_ID=`aws cognito-idp list-user-pool-clients --user-pool-id $CHAPTER4_POOL_ID | jq -r '.UserPoolClients | .[0].ClientId'`
     echo CHAPTER4_POOL_CLIENT_ID=$CHAPTER4_POOL_CLIENT_ID>>.env
 
-    export CHAPTER4_COGNITO_DOMAIN=$CHAPTER4_COGNITO_BASE_DOMAIN.auth.eu-west-1.amazoncognito.com
+    export CHAPTER4_COGNITO_DOMAIN=$CHAPTER4_COGNITO_BASE_DOMAIN.auth.ap-northeast-2.amazoncognito.com
     echo CHAPTER4_COGNITO_DOMAIN=$CHAPTER4_COGNITO_DOMAIN>>.env
     echo '#<<'>>.env
 

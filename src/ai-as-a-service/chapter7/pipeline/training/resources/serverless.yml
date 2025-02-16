@@ -1,9 +1,9 @@
 service: chapter7-resources
-frameworkVersion: ">=1.30.0"
+frameworkVersion: ">=4.0.0"
 plugins:
   - serverless-dotenv-plugin
 custom:
-  region: ${env:AWS_DEFAULT_REGION, 'eu-west-1'}
+  region: ${env:AWS_DEFAULT_REGION, 'ap-northeast-2'}
   accountid: ${env:AWS_ACCOUNT_ID}
   trainingbucket: ${env:CHAPTER7_PIPELINE_TRAINING_BUCKET}
   dotenv:
@@ -13,7 +13,7 @@ provider:
   name: aws
   runtime: nodejs12.x
   stage: ${opt:stage, 'dev'}
-  region: ${env:AWS_DEFAULT_REGION, 'eu-west-1'}
+  region: ${env:AWS_DEFAULT_REGION, 'ap-northeast-2'}
 
 resources:
   Resources:

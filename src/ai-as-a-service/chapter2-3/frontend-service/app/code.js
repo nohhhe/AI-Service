@@ -1,7 +1,7 @@
 /* globals $:false imageListItemTpl:false imageListTpl:false WordCloud:false Chart:false */
 "use strict";
 
-const BUCKET_ROOT = "http://hhcrawlerbucket.s3-website.ap-northeast-2.amazonaws.com"; // 주소 형태: https://s3-eu-west-1.amazonaws.com/<YOUR BUCKET NAME>
+const BUCKET_ROOT = "http://hhcrawlerbucket.s3-website.ap-northeast-2.amazonaws.com"; // 주소 형태: https://s3-ap-northeast-2.amazonaws.com/<YOUR BUCKET NAME>
 const API_ROOT = "https://chapter2api.hhnai.com/api/";
 
 // URL 내 쿼리 문자열을 제거하여 출력

@@ -12,9 +12,9 @@ custom:
 
 provider:
   name: aws
-  runtime: nodejs14.x
+  runtime: nodejs20.x
   stage: ${opt:stage, 'dev'}
-  region: ${opt:region, 'eu-west-1'}
+  region: ${opt:region, 'ap-northeast-2'}
   environment:
     STAGE: ${self:provider.stage}
     MAX_DEPTH: 3

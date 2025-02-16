@@ -132,7 +132,7 @@
       "Properties": {
         "Code": {
           "S3Bucket": "serverless-framework-deployments-ap-northeast-2-21f132c7-a2b2",
-          "S3Key": "serverless/analysis-service/dev/1739091276727-2025-02-09T08:54:36.727Z/analysis-service.zip"
+          "S3Key": "serverless/analysis-service/dev/1739720228707-2025-02-16T15:37:08.707Z/analysis-service.zip"
         },
         "Handler": "handler.analyzeImages",
         "Runtime": "nodejs20.x",
@@ -157,14 +157,14 @@
         "AnalyzeImagesLogGroup"
       ]
     },
-    "AnalyzeImagesLambdaVersionbDTd3wplaW2Amtxfs8XyPXXraVQjWOH2bfxADqdDPRM": {
+    "AnalyzeImagesLambdaVersionO8hBzoyBI50dTvENq4u6aViDxM7LpY5PYxG2163V8": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "AnalyzeImagesLambdaFunction"
         },
-        "CodeSha256": "Kraok1yY5WGNABhZ6iuCMQUOyo9AY9x1QRkr+E67RHI="
+        "CodeSha256": "kmP7VsxUayIQI9QDXW2WbNHu8K+nQWcN+soomB1YnJQ="
       }
     },
     "AnalyzeImagesEventSourceMappingSQSChap2AnalysisQueue": {
@@ -195,7 +195,7 @@
     "AnalyzeImagesLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "AnalyzeImagesLambdaVersionbDTd3wplaW2Amtxfs8XyPXXraVQjWOH2bfxADqdDPRM"
+        "Ref": "AnalyzeImagesLambdaVersionO8hBzoyBI50dTvENq4u6aViDxM7LpY5PYxG2163V8"
       },
       "Export": {
         "Name": "sls-analysis-service-dev-AnalyzeImagesLambdaFunctionQualifiedArn"

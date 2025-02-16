@@ -6,7 +6,7 @@
     },
     "provider": {
       "name": "aws",
-      "runtime": "nodejs14.x",
+      "runtime": "nodejs20.x",
       "stage": "dev",
       "region": "ap-northeast-2",
       "versionFunctions": true,
@@ -46,6 +46,15 @@
                       "s3:GetObject"
                     ],
                     "Resource": "arn:aws:s3:::hhcrawlerbucket/*"
+                  },
+                  {
+                    "Sid": "PublicListBucket",
+                    "Effect": "Allow",
+                    "Principal": "*",
+                    "Action": [
+                      "s3:ListBucket"
+                    ],
+                    "Resource": "arn:aws:s3:::hhcrawlerbucket"
                   }
                 ]
               }
@@ -117,6 +126,15 @@
                     "s3:GetObject"
                   ],
                   "Resource": "arn:aws:s3:::hhcrawlerbucket/*"
+                },
+                {
+                  "Sid": "PublicListBucket",
+                  "Effect": "Allow",
+                  "Principal": "*",
+                  "Action": [
+                    "s3:ListBucket"
+                  ],
+                  "Resource": "arn:aws:s3:::hhcrawlerbucket"
                 }
               ]
             }
@@ -138,7 +156,7 @@
       "Outputs": {}
     },
     "configValidationMode": "warn",
-    "serviceFilename": "serverless.yml",
+    "serviceFilename": "serverless",
     "initialServerlessConfig": {
       "service": "resources",
       "frameworkVersion": ">=4.0.0",
@@ -157,7 +175,7 @@
     "layers": {}
   },
   "package": {
-    "artifactDirectoryName": "serverless/resources/dev/1737302948471-2025-01-19T16:09:08.471Z",
+    "artifactDirectoryName": "serverless/resources/dev/1739722766115-2025-02-16T16:19:26.115Z",
     "artifact": ""
   }
 }

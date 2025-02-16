@@ -1,5 +1,5 @@
 service: ui-service
-frameworkVersion: ">=>=4.0.0"
+frameworkVersion: ">=4.0.0"
 plugins:
   - serverless-domain-manager
 custom:
@@ -25,6 +25,7 @@ provider:
       Action:
         - s3:PutObject
         - s3:GetObject
+        - s3:ListBucket
       Resource: "arn:aws:s3:::${self:custom.bucket}/*"
     - Effect: Allow
       Action:
