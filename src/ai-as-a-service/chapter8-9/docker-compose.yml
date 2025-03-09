@@ -13,5 +13,5 @@ services:
       - '4586:4586' # CloudWatch Logs
       - '4593:4593' # IAM
     environment:
-      - DEFAULT_REGION=us-east-1
+      - DEFAULT_REGION=ap-northeast-2
       - SERVICES=apigateway,dynamodb,s3,lambda,ssm,logs,iam,cloudformation

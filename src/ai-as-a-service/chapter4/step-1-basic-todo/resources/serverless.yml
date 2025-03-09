@@ -21,6 +21,14 @@ resources:
       Type: AWS::S3::Bucket
       Properties:
         BucketName: ${self:custom.dataBucket}
+        OwnershipControls:
+          Rules:
+            - ObjectOwnership: BucketOwnerPreferred
+        PublicAccessBlockConfiguration:
+          BlockPublicAcls: false
+          BlockPublicPolicy: false
+          IgnorePublicAcls: false
+          RestrictPublicBuckets: false
         CorsConfiguration:
           CorsRules:
             -
@@ -35,7 +43,6 @@ resources:
                 - DELETE
                 - HEAD
               MaxAge: 3000
-        AccessControl: PublicRead
     DataBucketPolicy:
       Type: AWS::S3::BucketPolicy
       Properties:

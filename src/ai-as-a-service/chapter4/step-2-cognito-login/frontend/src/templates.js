@@ -2,6 +2,7 @@
 
 export { todoListTpl, editTpl, addTpl, errTpl, navBarTpl, navBarScheduleTpl }
 
+// 작업 템플릿 생성
 function todoItemTpl (item) {
   return `
     <div id="${item.id}" class="row list-group-item d-flex justify-content-between align-items-center">
@@ -15,7 +16,7 @@ function todoItemTpl (item) {
     </div>`
 }
 
-
+// 작업 목록을 템플릿 형태로 생성
 function todoListTpl (items) {
   let output = ''
   items.forEach(item => {
@@ -43,10 +44,11 @@ function todoListTpl (items) {
   </div>`
 }
 
-
+// 작업 편집 템플릿 생성
 function editTpl () {
   return `
     <div class="row">&nbsp;</div>
+    <div class="row">
     <div class="row">
       <div class="col-sm-6">
         <div class="row">
@@ -79,19 +81,19 @@ function editTpl () {
     </div>`
 }
 
-
+// 작업 추가 템플릿 생성
 function addTpl () {
   return `<li class="list-group-item d-flex justify-content-between align-items-center">
     <span id="input-todo" class="badge badge-success badge-pill">new</span>
   </li>`
 }
 
-
+// 에러 템플릿 생성
 function errTpl (err) {
   return `<div class="error">${JSON.stringify(err)}</div>`
 }
 
-
+// 로그인 여부에 따른 로그인/로그아웃 버튼을 포함한 네비게이션 바 템플릿 생성
 function navBarTpl (isAuth) {
   let link
 
@@ -109,7 +111,7 @@ function navBarTpl (isAuth) {
   </ul>`
 }
 
-
+// 사용하지 않는 함수?
 function navBarScheduleTpl () {
   return `
     <li class="nav-item">

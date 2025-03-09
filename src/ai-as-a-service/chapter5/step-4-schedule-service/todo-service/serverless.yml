@@ -7,7 +7,7 @@ plugins:
 custom:
   region: ${env:AWS_DEFAULT_REGION, 'ap-northeast-2'}
   accountid: ${env:AWS_ACCOUNT_ID}
-  poolArn: ${env:CHAPTER4_POOL_ARN}
+  poolArn: ${env:CHAPTER4_POOL_ARN} CHARTER4_POOL_ARN
   domain: ${env:CHAPTER4_DOMAIN}
   dotenv:
     path: ../.env
