@@ -21,7 +21,7 @@ function renderAddButton () {
 function renderEditArea (id) {
   // 편집 영역을 렌더링
   $('#edit-area').html(editTpl())
-  $('#todo-duedate').datepicker()
+  // $('#todo-duedate').datepicker() 없어도 되지 않을까?
   setTimeout(function () {
     $('#todo-duedate').datepicker()
     // id가 있으면 편집 영역을 채움
