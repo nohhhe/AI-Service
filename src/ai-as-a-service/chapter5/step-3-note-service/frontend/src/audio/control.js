@@ -4,7 +4,7 @@ import {AudioRecorder} from './recorder.js'
 
 export {AudioControl}
 
-
+// 오디오 녹음 및 재생을 제어하는 객체
 function AudioControl (options) {
   let recorder
   let audioRecorder
@@ -13,9 +13,10 @@ function AudioControl (options) {
   let playbackSource
   let UNSUPPORTED = 'Audio is not supported.'
   options = options || {}
+  // 오디오 지원 여부를 확인하는 옵션
   checkAudioSupport = options.checkAudioSupport !== false
 
-
+  // 녹음 시작
   function startRecording (onSilence, visualizer, silenceDetectionConfig) {
     onSilence = onSilence || function () {}
     visualizer = visualizer || function () {}
@@ -23,20 +24,24 @@ function AudioControl (options) {
     if (!audioSupported) {
       throw new Error(UNSUPPORTED)
     }
+
+    // 오디오 녹음을 위한 객체 생성
     recorder = audioRecorder.createRecorder(silenceDetectionConfig)
+    // 녹음 시작
     recorder.record(onSilence, visualizer)
   }
 
-
+  // 녹음 중지
   function stopRecording () {
     audioSupported = audioSupported !== false
     if (!audioSupported) {
       throw new Error(UNSUPPORTED)
     }
+    // 녹음 중지
     recorder.stop()
   }
 
-
+  // 녹음된 오디오 데이터를 WAV 파일로 변환
   function exportWAV (callback, sampleRate) {
     audioSupported = audioSupported !== false
     if (!audioSupported) {
@@ -46,10 +51,12 @@ function AudioControl (options) {
       throw new Error('You must pass a callback function to export.')
     }
     sampleRate = (typeof sampleRate !== 'undefined') ? sampleRate : 16000
+
+    // WAV 파일로 변환
     recorder.exportWAV(callback, sampleRate)
+    // 녹음된 데이터 초기화
     recorder.clear()
   }
-
 
   function playHtmlAudioElement (buffer, callback) {
     if (typeof buffer === 'undefined') {
@@ -67,7 +74,6 @@ function AudioControl (options) {
     })
     audio.play()
   }
-
 
   function play (buffer, callback) {
     if (typeof buffer === 'undefined') {
@@ -97,7 +103,6 @@ function AudioControl (options) {
     fileReader.readAsArrayBuffer(myBlob)
   }
 
-
   function stop () {
     if (typeof playbackSource === 'undefined') {
       return
@@ -105,16 +110,18 @@ function AudioControl (options) {
     playbackSource.stop()
   }
 
-
   function clear () {
     recorder.clear()
   }
 
-
+  // 오디오 지원 여부 확인
   function supportsAudio (callback) {
     callback = callback || function () { }
+    // 브라우저에서 오디오 지원 여부 확인
     if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+      // 오디오 녹음을 위한 객체 생성
       audioRecorder = AudioRecorder()
+      // 브라우저에서 오디오 권한을 요청하고 스트림을 생성
       audioRecorder.requestDevice()
         .then((stream) => {
           audioSupported = true
@@ -130,16 +137,14 @@ function AudioControl (options) {
     }
   }
 
-
+  // 오디오 녹음 객체 종료
   function close () {
     audioRecorder.close()
   }
 
-
   if (checkAudioSupport) {
     supportsAudio()
   }
-
 
   return {
     startRecording,
