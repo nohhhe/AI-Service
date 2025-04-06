@@ -26,33 +26,33 @@ self.onmessage = function (e) {
   }
 }
 
-
+// 녹음 초기화
 function init (config) {
   recordSampleRate = config.sampleRate
 }
 
-
+// 녹음 데이터를 버퍼에 저장
 function record (inputBuffer) {
   recBuffer.push(inputBuffer[0])
   recLength += inputBuffer[0].length
 }
 
-
+// 녹음된 데이터를 WAV 파일로 변환
 function exportBuffer (exportSampleRate) {
-  let mergedBuffers = mergeBuffers(recBuffer, recLength)
-  let downsampledBuffer = downsampleBuffer(mergedBuffers, exportSampleRate)
-  let encodedWav = encodeWAV(downsampledBuffer)
-  let audioBlob = new Blob([encodedWav], {type: 'application/octet-stream'})
-  postMessage(audioBlob)
+  let mergedBuffers = mergeBuffers(recBuffer, recLength) // 버퍼를 합침
+  let downsampledBuffer = downsampleBuffer(mergedBuffers, exportSampleRate) // 샘플레이트를 줄임
+  let encodedWav = encodeWAV(downsampledBuffer) // WAV 파일로 인코딩
+  let audioBlob = new Blob([encodedWav], {type: 'application/octet-stream'}) // 블롭 객체 생성
+  postMessage(audioBlob) // 블롭 객체를 메인 스레드로 전송
 }
 
-
+// 버퍼 초기화
 function clear () {
   recLength = 0
   recBuffer = []
 }
 
-
+// 녹음된 오디오 데이터를 지정한 샘플레이트로 줄이는 함수
 function downsampleBuffer (buffer, exportSampleRate) {
   if (typeof exportSampleRate === 'undefined' || exportSampleRate === recordSampleRate) {
     return buffer
@@ -77,7 +77,7 @@ function downsampleBuffer (buffer, exportSampleRate) {
   return result
 }
 
-
+// 녹음된 오디오 버퍼를 하나로 합치는 함수
 function mergeBuffers (bufferArray, recLength) {
   let result = new Float32Array(recLength)
   let offset = 0
@@ -88,7 +88,7 @@ function mergeBuffers (bufferArray, recLength) {
   return result
 }
 
-
+// 16비트 PCM으로 변환
 function floatTo16BitPCM (output, offset, input) {
   for (let i = 0; i < input.length; i++, offset += 2) {
     let s = Math.max(-1, Math.min(1, input[i]))
@@ -96,14 +96,14 @@ function floatTo16BitPCM (output, offset, input) {
   }
 }
 
-
+// 문자열을 바이너리 데이터로 변환 (WAV 파일은 바이너리 파일 포맷)
 function writeString (view, offset, string) {
   for (let i = 0; i < string.length; i++) {
     view.setUint8(offset + i, string.charCodeAt(i))
   }
 }
 
-
+// WAV 파일로 인코딩
 function encodeWAV (samples) {
   let buffer = new ArrayBuffer(44 + samples.length * 2)
   let view = new DataView(buffer)

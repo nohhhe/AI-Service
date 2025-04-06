@@ -133,7 +133,7 @@
             "Properties": {
               "Code": {
                 "S3Bucket": "serverless-framework-deployments-ap-northeast-2-21f132c7-a2b2",
-                "S3Key": "serverless/chapter4-note/dev/1742739190731-2025-03-23T14:13:10.731Z/chapter4-note.zip"
+                "S3Key": "serverless/chapter4-note/dev/1743953827688-2025-04-06T15:37:07.688Z/chapter4-note.zip"
               },
               "Handler": "handler.transcribe",
               "Runtime": "nodejs20.x",
@@ -159,7 +159,7 @@
             "Properties": {
               "Code": {
                 "S3Bucket": "serverless-framework-deployments-ap-northeast-2-21f132c7-a2b2",
-                "S3Key": "serverless/chapter4-note/dev/1742739190731-2025-03-23T14:13:10.731Z/chapter4-note.zip"
+                "S3Key": "serverless/chapter4-note/dev/1743953827688-2025-04-06T15:37:07.688Z/chapter4-note.zip"
               },
               "Handler": "handler.poll",
               "Runtime": "nodejs20.x",
@@ -442,7 +442,7 @@
               ]
             }
           },
-          "ApiGatewayDeployment1742739180528": {
+          "ApiGatewayDeployment1743953820362": {
             "Type": "AWS::ApiGateway::Deployment",
             "Properties": {
               "RestApiId": {
@@ -729,7 +729,7 @@
     "artifact": "/Users/hhnho/workspace/ai-service/src/ai-as-a-service/chapter5/step-3-note-service/note-service/.serverless/chapter4-note.zip"
   },
   "package": {
-    "artifactDirectoryName": "serverless/chapter4-note/dev/1742739190731-2025-03-23T14:13:10.731Z",
+    "artifactDirectoryName": "serverless/chapter4-note/dev/1743953827688-2025-04-06T15:37:07.688Z",
     "artifact": "chapter4-note.zip"
   }
 }

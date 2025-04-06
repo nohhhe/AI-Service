@@ -10,14 +10,14 @@ const API_ROOT = `https://chapter4api.${process.env.CHAPTER4_DOMAIN}/schedule/da
 let itv
 let auth
 
-
+// 스케줄링된 파일을 재생하는 함수
 function playSchedule (url) {
   let audio = document.createElement('audio')
   audio.src = url
   audio.play()
 }
 
-
+// 스케줄 상태를 폴링하는 함수
 function pollSchedule (taskId) {
   itv = setInterval(() => {
     auth.session().then(session => {
@@ -42,7 +42,7 @@ function pollSchedule (taskId) {
   }, 3000)
 }
 
-
+// 스케줄 변환을 요청하는 함수
 function buildSchedule (date) {
   const body = {
     date: date
@@ -67,7 +67,7 @@ function buildSchedule (date) {
   }).catch(err => view.renderError(err))
 }
 
-
+// 이벤트 핸들러를 바인딩하는 함수
 function bindButton () {
   $('#todo-schedule').unbind('click')
   $('#todo-schedule').on('click', e => {
@@ -75,7 +75,7 @@ function bindButton () {
   })
 }
 
-
+// 초기화 함수
 function activate (authObj) {
   auth = authObj
   view.renderScheduleButton()
