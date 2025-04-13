@@ -7,7 +7,7 @@ BOT_NAME="TodoBot"
 # 주의: 실제 환경에 맞는 정확한 ARN을 사용하세요.
 # 예시: ROLE_ARN="arn:aws:iam::ACCOUNT_ID:role/service-role/YourLexBotRole"
 # 아래 ARN은 예시이므로 실제 환경의 ARN으로 교체해야 합니다.
-ROLE_ARN="arn:aws:iam::311141557640:role/service-role/AWSServiceRoleForLexBots" # <--- 실제 ARN 확인 필수!
+ROLE_ARN="arn:aws:iam::311141557640:role/MyTodoBotExecutionRole" # <--- 실제 ARN 확인 필수!
 
 # --- 함수 정의 ---
 
@@ -17,8 +17,8 @@ create_slot_if_not_exists() {
   local slot_name=$2
   local slot_type_id=$3
   local prompt_value=$4
-  local max_retries=5
-  local retry_delay=25
+  local max_retries=2
+  local retry_delay=10
 
   if [ -z "$intent_id" ]; then
       echo "오류: 슬롯 '$slot_name' 생성 시 인텐트 ID가 비어있습니다. 건너뜁니다."
@@ -141,7 +141,7 @@ EOF
       echo "  오류: 봇을 생성하거나 봇 ID를 가져오지 못했습니다. 응답: $BOT_RESPONSE"; rm todo-bot.json; exit 1
   fi
   echo "  새 봇이 생성되었습니다. ID: $BOT_ID"; rm todo-bot.json
-  echo "  봇 생성을 위해 25초 대기합니다..."; sleep 25
+  echo "  봇 생성을 위해 10 대기합니다..."; sleep 10
 else
   echo "  봇 '$BOT_NAME'이(가) 이미 존재합니다. 기존 봇 ID 사용: $BOT_ID"
 fi
@@ -156,7 +156,7 @@ if [ $? -ne 0 ]; then
     aws lexv2-models describe-bot-locale --region "$REGION" --bot-id "$BOT_ID" --bot-version "DRAFT" --locale-id "$LANG" --no-cli-pager > /dev/null 2>&1
     if [ $? -ne 0 ]; then echo "  오류: 기존 로케일 '$LANG'을 설명할 수 없습니다."; fi
 else echo "  로케일 '$LANG' 생성/확인됨."; fi
-echo "  로케일 안정화를 위해 20초 대기합니다..."; sleep 20
+echo "  로케일 안정화를 위해 10초 대기합니다..."; sleep 10
 echo "[3/7단계] 완료."
 echo "-----------------------------------------------"
 
@@ -164,8 +164,8 @@ echo "-----------------------------------------------"
 echo "[4/7단계] 인텐트 확인/생성 중..."
 CREATE_INTENT_ID=""
 MARK_INTENT_ID=""
-# 인텐트 생성 후 대기 시간 (120초 유지)
-INTENT_CREATION_WAIT_TIME=120
+# 인텐트 생성 후 대기 시간 (20초 유지)
+INTENT_CREATION_WAIT_TIME=20
 
 # CreateTodo 인텐트
 CREATE_INTENT_NAME="CreateTodo"
@@ -336,7 +336,7 @@ elif [[ "$BUILD_STATUS" == "Building" || "$BUILD_STATUS" == "ReadyExpressTesting
 else echo "  경고: 빌드 ID를 가져오지 못했습니다. 응답: $BUILD_RESPONSE"; fi
 
 echo "  봇 로케일 빌드 완료 대기 중..."
-build_wait_time=0; build_timeout=720; check_interval=25
+build_wait_time=0; build_timeout=720; check_interval=10
 
 while true; do
   sleep 2

@@ -3,7 +3,7 @@
 const view = {showRequest, showResponse, showError}
 export {view}
 
-
+// 입력한 메시지를 화면에 보여주는 함수
 function showRequest (text) {
   var conversationDiv = document.getElementById('conversation')
   var requestPara = document.createElement('P')
@@ -13,7 +13,7 @@ function showRequest (text) {
   conversationDiv.scrollTop = conversationDiv.scrollHeight
 }
 
-
+// 에러 메시지를 화면에 보여주는 함수
 function showError (text) {
   var conversationDiv = document.getElementById('conversation')
   var errorPara = document.createElement('P')
@@ -23,7 +23,7 @@ function showError (text) {
   conversationDiv.scrollTop = conversationDiv.scrollHeight
 }
 
-
+// lex의 응답을 화면에 보여주는 함수
 function showResponse (lexResponse) {
   var conversationDiv = document.getElementById('conversation')
   var responsePara = document.createElement('P')
