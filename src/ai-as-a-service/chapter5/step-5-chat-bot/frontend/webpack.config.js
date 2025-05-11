@@ -32,24 +32,18 @@ module.exports = {
       }
     },
     {
-      test: /\.m?js$/, // .js 또는 .mjs 확장자를 가진 파일에 대해
-      exclude: /node_modules/, // node_modules 폴더는 일반적으로 변환 대상에서 제외
+      test: /\.m?js$/,
+      // node_modules 디렉토리를 제외하지만, @aws-sdk 와 @smithy 로 시작하는 경로는 제외하지 않음
+      exclude: /node_modules(?![\\/]@aws-sdk|![\\/]@smithy)/, // <--- 이렇게 수정!
       use: {
-        loader: 'babel-loader', // babel-loader 사용
-        options: {
-          // Babel 설정을 여기서 직접 지정 (별도 .babelrc 파일이 없으므로)
+        loader: 'babel-loader',
+        options: {œ
           presets: [
-            ['@babel/preset-env', {
-              // targets: "> 0.25%, not dead" // 필요한 경우 지원 브라우저/환경 지정 가능
-              // 기본 설정을 사용해도 대부분의 최신 문법을 처리함
-            }]
+            ['@babel/preset-env', {}]
           ]
-          // 필요한 경우 플러그인 추가:
-          // plugins: ['@babel/plugin-proposal-optional-chaining', ...]
         }
       }
-    }
-    ]
+    }]
   },
   plugins: [
     new Dotenv({
